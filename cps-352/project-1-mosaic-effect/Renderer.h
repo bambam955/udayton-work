@@ -1,5 +1,6 @@
 #pragma once
 
+#include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 
 using namespace cv;
@@ -16,4 +17,7 @@ public:
 private:
 	String m_windowName = "";
 	String m_imgName = "";
+
+	Mat m_originalImg;
+	Mat m_currentImg;
 };
