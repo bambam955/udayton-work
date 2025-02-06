@@ -14,20 +14,28 @@ void InputHandler::onMouse(int event, int x, int y, int flag, void* data)
 
 void InputHandler::mouseHandler(int event, int x, int y, int flag)
 {
-    if (event == cv::MouseEventTypes::EVENT_LBUTTONDOWN)
+    switch (event)
     {
+    case cv::MouseEventTypes::EVENT_LBUTTONDOWN:
         m_renderer->saveTopLeft(x, y);
-
         m_isDrawing = true;
+        m_hasMouseMovedSinceClick = false;
         printf("drawing is on\n");
-
-    }
-    else if (event == cv::MouseEventTypes::EVENT_LBUTTONUP)
-    {
-        m_renderer->saveCurrentRect();
+        break;
+    case cv::MouseEventTypes::EVENT_LBUTTONUP:
+        if (m_hasMouseMovedSinceClick)
+            m_renderer->saveCurrentRect();
+        else
+            m_renderer->resetImage();
 
         m_isDrawing = false;
         printf("drawing is off\n");
+        break;
+    case cv::MouseEventTypes::EVENT_MOUSEMOVE:
+        m_hasMouseMovedSinceClick = true;
+        break;
+    default:
+        break;
     }
 
     // TODO: handle single click to remove blurring

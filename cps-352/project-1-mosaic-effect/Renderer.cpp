@@ -29,6 +29,7 @@ void Renderer::resetImage()
 {
 	m_originalImg.copyTo(m_currentImg);
 	m_originalImg.copyTo(m_lastImg);
+	m_currentTopLeft = m_currentBottomRight = Point(-1, -1);
 }
 
 void Renderer::displayImage() const
@@ -57,8 +58,7 @@ void Renderer::saveCurrentRect()
 	rectangle(m_lastImg, m_currentTopLeft, m_currentBottomRight, Scalar(0, 255, 255));
 	m_lastImg.copyTo(m_currentImg);
 
-	m_currentTopLeft = Point(-1, -1);
-	m_currentBottomRight = Point(-1, -1);
+	m_currentTopLeft = m_currentBottomRight = Point(-1, -1);
 }
 
 void Renderer::increaseBlurDegree()

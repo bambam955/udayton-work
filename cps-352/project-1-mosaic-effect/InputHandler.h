@@ -15,4 +15,6 @@ private:
 
 	Renderer* m_renderer = nullptr;
 	bool m_isDrawing = false;
+
+	bool m_hasMouseMovedSinceClick = false;
 };
