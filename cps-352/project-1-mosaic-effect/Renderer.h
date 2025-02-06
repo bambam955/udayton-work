@@ -13,7 +13,7 @@ public:
 
 	String windowName() const;
 	
-	void displayImage();
+	void displayImage() const;
 
 	void saveTopLeft(int x, int y);
 	void redrawCurrentRect(int x, int y);

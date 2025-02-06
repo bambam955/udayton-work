@@ -26,7 +26,7 @@ String Renderer::windowName() const
 	return m_windowName;
 }
 
-void Renderer::displayImage()
+void Renderer::displayImage() const
 {
 	imshow(m_windowName, m_currentImg);
 }
