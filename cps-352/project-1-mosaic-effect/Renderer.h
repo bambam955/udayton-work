@@ -19,6 +19,9 @@ public:
 	void redrawCurrentRect(int x, int y);
 	void saveCurrentRect();
 
+	void increaseBlurDegree();
+	void decreaseBlurDegree();
+
 	void saveImageToFiles();
 
 private:
@@ -31,4 +34,6 @@ private:
 
 	Point m_currentTopLeft = Point(-1, -1);
 	Point m_currentBottomRight = Point(-1, -1);
+
+	unsigned int m_blurDegree = 5;
 };

@@ -50,11 +50,11 @@ bool InputHandler::handleKeyPresses()
         return false; // Exit the application
     case 'i':
     case 'I':
-        // TODO: increase the mosaic blur size
+        m_renderer->increaseBlurDegree();
         break;
     case 'd':
     case 'D':
-        // TODO: decrease the mosaic blur size
+        m_renderer->decreaseBlurDegree();
         break;
     case 'r':
     case 'R':

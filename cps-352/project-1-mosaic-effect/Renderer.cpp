@@ -11,7 +11,7 @@ Renderer::Renderer(const String& windowName, const String& imgName)
 
 	if (m_originalImg.empty())
 	{
-		std::cerr << "Could not load image " << m_imgName;
+		fprintf(stderr, "Could not load image %s!\n", m_imgName.c_str());
 		return;
 	}
 
@@ -56,15 +56,37 @@ void Renderer::saveCurrentRect()
 	m_currentBottomRight = Point(-1, -1);
 }
 
+void Renderer::increaseBlurDegree()
+{
+	if (m_blurDegree < 5)
+		++m_blurDegree;
+	else
+		m_blurDegree += 5;
+
+	printf("New blur degree: %d\n", m_blurDegree);
+}
+
+void Renderer::decreaseBlurDegree()
+{
+	if (m_blurDegree <= 1)
+		return;
+	else if (m_blurDegree <= 5)
+		--m_blurDegree;
+	else
+		m_blurDegree -= 5;
+
+	printf("New blur degree: %d\n", m_blurDegree);
+}
+
 void Renderer::saveImageToFiles()
 {
-	bool success = imwrite(m_imgName, m_currentImg);
+	const bool success = imwrite(m_imgName, m_currentImg);
 	if (success)
 	{
-		std::cout << "Successfully saved image " << m_imgName;
+		printf("Saved image %s successfully.\n", m_imgName.c_str());
 	}
 	else
 	{
-		std::cerr << "Failed to save image " << m_imgName;
+		fprintf(stderr, "Failed to save image %s!!\n", m_imgName.c_str());
 	}
 }
