@@ -16,11 +16,8 @@ void InputHandler::mouseHandler(int event, int x, int y, int flag)
 {
     if (event == cv::MouseEventTypes::EVENT_LBUTTONDOWN)
     {
-        // TODO: draw the point that the mouse clicks
-        //Draw the point that the mouse click
-        //circle(img2, Point(x, y), 1, Scalar(0, 255, 255), 3);
+        m_renderer->saveTopLeft(x, y);
 
-        //pt = Point(x, y);
         m_isDrawing = true;
         printf("drawing is on\n");
 
@@ -33,12 +30,9 @@ void InputHandler::mouseHandler(int event, int x, int y, int flag)
 
     // TODO: handle single click to remove blurring
 
-
     if (m_isDrawing)
     {
-        // TODO: draw a rectangle from point of first click to point of drag
-        //img_original.copyTo(img2);
-        //rectangle(img2, pt, Point(x, y), Scalar(0, 255, 255));
+        m_renderer->redrawRectangle(x, y);
     }
 }
 

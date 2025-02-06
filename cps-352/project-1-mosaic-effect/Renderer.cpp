@@ -1,6 +1,8 @@
 #include "Renderer.h"
 
-Renderer::Renderer(const cv::String& windowName, const cv::String& imgName)
+#include <opencv2/imgproc/imgproc.hpp>
+
+Renderer::Renderer(const String& windowName, const String& imgName)
 {
 	m_windowName = windowName;
 	m_imgName = imgName;
@@ -11,7 +13,7 @@ Renderer::Renderer(const cv::String& windowName, const cv::String& imgName)
 	namedWindow(m_windowName);
 }
 
-cv::String Renderer::windowName() const
+String Renderer::windowName() const
 {
 	return m_windowName;
 }
@@ -19,4 +21,18 @@ cv::String Renderer::windowName() const
 void Renderer::displayImage()
 {
 	imshow(m_windowName, m_currentImg);
+}
+
+void Renderer::saveTopLeft(int x, int y)
+{
+	circle(m_currentImg, Point(x, y), 1, Scalar(0, 255, 255), 3);
+	m_topLeft = Point(x, y);
+}
+
+void Renderer::redrawRectangle(int x, int y)
+{
+	if (m_topLeft.x < 0 || m_topLeft.y < 0)
+		return;
+	m_originalImg.copyTo(m_currentImg);
+	rectangle(m_currentImg, m_topLeft, Point(x, y), Scalar(0, 255, 255));
 }

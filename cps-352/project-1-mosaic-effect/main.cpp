@@ -12,7 +12,6 @@ int main(int argc, char** argv)
     {
         renderer.displayImage();
         
-        //Using keyboard to stop the while loop
         const bool continueLooping = inputHandler.handleKeyPresses();
         if (!continueLooping)
             break;

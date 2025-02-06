@@ -14,10 +14,15 @@ public:
 	
 	void displayImage();
 
+	void saveTopLeft(int x, int y);
+	void redrawRectangle(int x, int y);
+
 private:
 	String m_windowName = "";
 	String m_imgName = "";
 
 	Mat m_originalImg;
 	Mat m_currentImg;
+
+	Point m_topLeft = Point(-1, -1);
 };
