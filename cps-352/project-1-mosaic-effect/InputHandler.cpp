@@ -24,6 +24,8 @@ void InputHandler::mouseHandler(int event, int x, int y, int flag)
     }
     else if (event == cv::MouseEventTypes::EVENT_LBUTTONUP)
     {
+        m_renderer->saveCurrentRect();
+
         m_isDrawing = false;
         printf("drawing is off\n");
     }
@@ -32,7 +34,7 @@ void InputHandler::mouseHandler(int event, int x, int y, int flag)
 
     if (m_isDrawing)
     {
-        m_renderer->redrawRectangle(x, y);
+        m_renderer->redrawCurrentRect(x, y);
     }
 }
 

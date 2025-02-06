@@ -9,6 +9,7 @@ Renderer::Renderer(const String& windowName, const String& imgName)
 
 	m_originalImg = imread(m_imgName);
 	m_originalImg.copyTo(m_currentImg);
+	m_originalImg.copyTo(m_lastImg);
 
 	namedWindow(m_windowName);
 }
@@ -25,14 +26,25 @@ void Renderer::displayImage()
 
 void Renderer::saveTopLeft(int x, int y)
 {
-	circle(m_currentImg, Point(x, y), 1, Scalar(0, 255, 255), 3);
-	m_topLeft = Point(x, y);
+	m_currentTopLeft = Point(x, y);
+	circle(m_currentImg, m_currentTopLeft, 1, Scalar(0, 255, 255), 3);
 }
 
-void Renderer::redrawRectangle(int x, int y)
+void Renderer::redrawCurrentRect(int x, int y)
 {
-	if (m_topLeft.x < 0 || m_topLeft.y < 0)
+	if (m_currentTopLeft.x < 0 || m_currentTopLeft.y < 0)
 		return;
-	m_originalImg.copyTo(m_currentImg);
-	rectangle(m_currentImg, m_topLeft, Point(x, y), Scalar(0, 255, 255));
+
+	m_lastImg.copyTo(m_currentImg);
+	m_currentBottomRight = Point(x, y);
+	rectangle(m_currentImg, m_currentTopLeft, m_currentBottomRight, Scalar(0, 255, 255));
+}
+
+void Renderer::saveCurrentRect()
+{
+	rectangle(m_lastImg, m_currentTopLeft, m_currentBottomRight, Scalar(0, 255, 255));
+	m_lastImg.copyTo(m_currentImg);
+
+	m_currentTopLeft = Point(-1, -1);
+	m_currentBottomRight = Point(-1, -1);
 }
