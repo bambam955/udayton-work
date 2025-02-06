@@ -15,8 +15,7 @@ Renderer::Renderer(const String& windowName, const String& imgName)
 		return;
 	}
 
-	m_originalImg.copyTo(m_currentImg);
-	m_originalImg.copyTo(m_lastImg);
+	resetImage();
 
 	namedWindow(m_windowName);
 }
@@ -24,6 +23,12 @@ Renderer::Renderer(const String& windowName, const String& imgName)
 String Renderer::windowName() const
 {
 	return m_windowName;
+}
+
+void Renderer::resetImage()
+{
+	m_originalImg.copyTo(m_currentImg);
+	m_originalImg.copyTo(m_lastImg);
 }
 
 void Renderer::displayImage() const

@@ -58,7 +58,7 @@ bool InputHandler::handleKeyPresses()
         break;
     case 'r':
     case 'R':
-        // TODO: remove blur effect
+        m_renderer->resetImage();
         break;
     case 's':
     case 'S':

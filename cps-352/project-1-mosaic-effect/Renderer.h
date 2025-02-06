@@ -13,6 +13,7 @@ public:
 
 	String windowName() const;
 	
+	void resetImage();
 	void displayImage() const;
 
 	void saveTopLeft(int x, int y);
