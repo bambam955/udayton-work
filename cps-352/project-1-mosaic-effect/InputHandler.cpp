@@ -3,11 +3,14 @@
 InputHandler::InputHandler(Renderer* renderer)
 {
     m_renderer = renderer;
+    // Set the callback as the static function to fit the argument type (*).
+    // Pass in this object to be returned in the callback later.
     cv::setMouseCallback(renderer->windowName(), InputHandler::onMouse, this);
 }
 
 void InputHandler::onMouse(int event, int x, int y, int flag, void* data)
 {
+    // Cast the data pointer to this object, then call the real handler.
     InputHandler* self = static_cast<InputHandler*>(data);
     self->mouseHandler(event, x, y, flag);
 }
@@ -17,12 +20,19 @@ void InputHandler::mouseHandler(int event, int x, int y, int flag)
     switch (event)
     {
     case cv::MouseEventTypes::EVENT_LBUTTONDOWN:
+    {
+        // Save the top left point and set status variables.
         m_renderer->saveTopLeft(x, y);
         m_isDrawing = true;
         m_hasMouseMovedSinceClick = false;
         printf("drawing is on\n");
         break;
+    }
     case cv::MouseEventTypes::EVENT_LBUTTONUP:
+    {
+        // Once the mouse is released, reset the image if it hasn't moved since being pressed.
+        // That means it was clicked. TODO: use duration checker to further validate this...
+        // If it has moved, then save the rectangle.
         if (m_hasMouseMovedSinceClick)
             m_renderer->saveCurrentRect();
         else
@@ -31,14 +41,16 @@ void InputHandler::mouseHandler(int event, int x, int y, int flag)
         m_isDrawing = false;
         printf("drawing is off\n");
         break;
+    }
     case cv::MouseEventTypes::EVENT_MOUSEMOVE:
+    {
+        // Set the flag so we know for the future.
         m_hasMouseMovedSinceClick = true;
         break;
+    }
     default:
         break;
     }
-
-    // TODO: handle single click to remove blurring
 
     if (m_isDrawing)
     {
@@ -52,10 +64,10 @@ bool InputHandler::handleKeyPresses()
 
     switch (c)
     {
-    case 27:
+    case 27: // ASCII for Esc key
     case 'x':
     case 'X':
-        return false; // Exit the application
+        return false; // Exits the application
     case 'i':
     case 'I':
         m_renderer->increaseBlurDegree();
