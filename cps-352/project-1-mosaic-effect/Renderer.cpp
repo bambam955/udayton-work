@@ -8,6 +8,13 @@ Renderer::Renderer(const String& windowName, const String& imgName)
 	m_imgName = imgName;
 
 	m_originalImg = imread(m_imgName);
+
+	if (m_originalImg.empty())
+	{
+		std::cerr << "Could not load image " << m_imgName;
+		return;
+	}
+
 	m_originalImg.copyTo(m_currentImg);
 	m_originalImg.copyTo(m_lastImg);
 
@@ -47,4 +54,17 @@ void Renderer::saveCurrentRect()
 
 	m_currentTopLeft = Point(-1, -1);
 	m_currentBottomRight = Point(-1, -1);
+}
+
+void Renderer::saveImageToFiles()
+{
+	bool success = imwrite(m_imgName, m_currentImg);
+	if (success)
+	{
+		std::cout << "Successfully saved image " << m_imgName;
+	}
+	else
+	{
+		std::cerr << "Failed to save image " << m_imgName;
+	}
 }

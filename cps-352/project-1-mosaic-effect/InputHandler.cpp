@@ -62,7 +62,9 @@ bool InputHandler::handleKeyPresses()
         break;
     case 's':
     case 'S':
-        // TODO: save the image
+        if (m_isDrawing)
+            break;
+        m_renderer->saveImageToFiles();
         break;
     default:
         break;
