@@ -4,6 +4,8 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
+using namespace cv;
+
 Renderer::Renderer(const String& windowName, const String& imgName)
 {
 	m_windowName = windowName;
@@ -34,8 +36,10 @@ void Renderer::resetImage()
 	// Bring everything back to the original image.
 	m_originalImg.copyTo(m_currentImg);
 	m_originalImg.copyTo(m_lastImg);
-	// Reset the points back to defaults.
-	m_currentTopLeft = m_currentBottomRight = Point(-1, -1);
+	// Reset the current points back to defaults.
+	m_currPoints.clear();
+	// Clear the history.
+	m_rectHistory.clear();
 }
 
 void Renderer::displayImage() const
@@ -46,32 +50,34 @@ void Renderer::displayImage() const
 void Renderer::saveTopLeft(int x, int y)
 {
 	// Set the top left corner of the current rectangle.
-	m_currentTopLeft = Point(x, y);
+	m_currPoints.p1 = Point(x, y);
 	// Create a little circle at the point's location.
-	circle(m_currentImg, m_currentTopLeft, 1, Scalar(0, 255, 255), 3);
+	circle(m_currentImg, m_currPoints.p1, 1, Scalar(0, 255, 255), 3);
 }
 
 void Renderer::redrawCurrentRect(int x, int y)
 {
 	// Do not try to redraw if the top left corner is invalid.
-	if (m_currentTopLeft.x < 0 || m_currentTopLeft.y < 0)
+	if (m_currPoints.p1.x < 0 || m_currPoints.p1.y < 0)
 		return;
 
 	// Remove the previous current rectangle so that we can redraw it with the new bottom right corner.
 	m_lastImg.copyTo(m_currentImg);
-	m_currentBottomRight = Point(x, y);
+	m_currPoints.p2 = Point(x, y);
 	// Redraw the rectangle.
-	rectangle(m_currentImg, m_currentTopLeft, m_currentBottomRight, Scalar(0, 255, 255));
+	rectangle(m_currentImg, m_currPoints.p1, m_currPoints.p2, Scalar(0, 255, 255));
 }
 
 void Renderer::saveCurrentRect()
 {
 	// Add the current rectangle to the last image so that it won't be erased during future redrawing.
-	rectangle(m_lastImg, m_currentTopLeft, m_currentBottomRight, Scalar(0, 255, 255));
+	rectangle(m_lastImg, m_currPoints.p1, m_currPoints.p2, Scalar(0, 255, 255));
+	blurRegion(m_currPoints);
 	m_lastImg.copyTo(m_currentImg);
-
+	// Add this rectangle to the history.
+	m_rectHistory.push_back(Corners(m_currPoints.p1, m_currPoints.p2));
 	// Reset the points to be invalid until we start drawing again.
-	m_currentTopLeft = m_currentBottomRight = Point(-1, -1);
+	m_currPoints.clear();
 }
 
 void Renderer::increaseBlurDegree()
@@ -82,6 +88,7 @@ void Renderer::increaseBlurDegree()
 		m_blurDegree += 5;
 
 	printf("New blur degree: %d\n", m_blurDegree);
+	updateAllBlurredRegions();
 }
 
 void Renderer::decreaseBlurDegree()
@@ -96,6 +103,7 @@ void Renderer::decreaseBlurDegree()
 		m_blurDegree -= 5;
 
 	printf("New blur degree: %d\n", m_blurDegree);
+	updateAllBlurredRegions();
 }
 
 void Renderer::saveImageToFiles()
@@ -109,4 +117,40 @@ void Renderer::saveImageToFiles()
 	{
 		fprintf(stderr, "Failed to save image %s!!\n", m_imgName.c_str());
 	}
+}
+
+void Renderer::updateAllBlurredRegions()
+{
+	for (const Corners& corners : m_rectHistory)
+	{
+		printf("P1 (%d, %d), P2 (%d, %d)\n", corners.p1.x, corners.p1.y, corners.p2.x, corners.p2.y);
+		blurRegion(corners);
+	}
+}
+
+void Renderer::blurRegion(const Corners& corners)
+{
+	unsigned char** arr2D = new unsigned char*[m_currentImg.rows];
+	for (int y = 0; y < m_currentImg.rows; y++)
+	{
+		arr2D[y] = new unsigned char[m_currentImg.cols * 3];
+		memcpy(arr2D[y], m_currentImg.data + y * m_currentImg.cols * 3, m_currentImg.cols * 3);
+	}
+
+	for (int y = corners.p1.y; y < corners.p2.y; y++)
+	{
+		for (int x = corners.p1.x; x < corners.p2.x; x++)
+		{
+			arr2D[y][x * 3 + 0] *= 2; // Blue
+			arr2D[y][x * 3 + 1] *= 2; // Green
+			arr2D[y][x * 3 + 2] *= 2; // Red
+		}
+	}
+
+	for (int y = corners.p1.y; y < corners.p2.y; y++)
+	{
+		memcpy(m_currentImg.data + y * m_currentImg.cols * 3, arr2D[y], m_currentImg.cols * 3);
+	}
+
+	return;
 }

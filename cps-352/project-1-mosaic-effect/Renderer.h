@@ -1,17 +1,16 @@
 #pragma once
 
+#include <vector>
 #include <opencv2/core/core.hpp>
-
-using namespace cv;
 
 class Renderer
 {
 public:
 	// When a renderer is created, pass in the name of the window to be created and the name of the image file.
-	explicit Renderer(const String& windowName, const String &imgName);
+	explicit Renderer(const cv::String& windowName, const cv::String &imgName);
 
 	// Get the name of the window.
-	String windowName() const;
+	cv::String windowName() const;
 	
 	void resetImage();
 	void displayImage() const;
@@ -33,21 +32,39 @@ public:
 	void saveImageToFiles();
 
 private:
-	String m_windowName = "";
-	String m_imgName = "";
+	struct Corners {
+		cv::Point p1;
+		cv::Point p2;
+
+		Corners() {}
+		Corners(const cv::Point& _p1, const cv::Point& _p2)
+		{
+			p1 = _p1;
+			p2 = _p2;
+		}
+
+		void clear() { p1 = p2 = cv::Point(-1, -1); }
+	};
+
+	void updateAllBlurredRegions();
+	void blurRegion(const Corners& corners);
+
+	cv::String m_windowName = "";
+	cv::String m_imgName = "";
 
 	// We save three versions of the image at all times.
 	// original - image that was initially read from the file. This is what we reset to if needed.
 	// last     - image that contains all the blurred rectangles except for the currently drawing one.
 	// current  - image that contains all the rectangles of the last image, plus the one that is
 	//			  currently being drawn.
-	Mat m_originalImg;
-	Mat m_lastImg;
-	Mat m_currentImg;
+	cv::Mat m_originalImg;
+	cv::Mat m_lastImg;
+	cv::Mat m_currentImg;
 
 	// Save the points of the rectangle that is currently being drawn.
-	Point m_currentTopLeft = Point(-1, -1);
-	Point m_currentBottomRight = Point(-1, -1);
+	Corners m_currPoints;
+	// Save the entire history of points in pairs of points.
+	std::vector<Corners> m_rectHistory;
 
 	// The level of blurring to add inside each rectangle.
 	unsigned int m_blurDegree = 5;

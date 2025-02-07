@@ -1,5 +1,7 @@
 #include "InputHandler.h"
 
+using namespace cv;
+
 InputHandler::InputHandler(Renderer* renderer)
 {
     m_renderer = renderer;
