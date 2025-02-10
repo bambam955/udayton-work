@@ -45,15 +45,18 @@ private:
 			finalize();
 		}
 
+		// Re-initialize the points so that p1 is the top left and p2 is the bottom right.
 		void finalize() {
+			// This is effectively a swap function so we need to save a temporary point.
+			cv::Point temp = p1;
 			p1 = cv::Point(std::min(p1.x, p2.x), std::min(p1.y, p2.y));
-			p2 = cv::Point(std::max(p1.x, p2.x), std::max(p1.y, p2.y));
+			p2 = cv::Point(std::max(temp.x, p2.x), std::max(temp.y, p2.y));
 		}
 		void clear() { p1 = p2 = cv::Point(-1, -1); }
 	};
 
+	void blurRegion(cv::Mat& img, const Corners& corners) const;
 	void updateAllBlurredRegions();
-	void blurRegion(cv::Mat& img, const Corners& corners);
 
 	cv::String m_windowName = "";
 	cv::String m_imgName = "";

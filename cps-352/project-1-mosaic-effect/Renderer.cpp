@@ -141,7 +141,7 @@ void Renderer::updateAllBlurredRegions()
 	m_lastImg.copyTo(m_currentImg);
 }
 
-void Renderer::blurRegion(Mat& img, const Corners& corners)
+void Renderer::blurRegion(Mat& img, const Corners& corners) const
 {
 	// Create a 2D array to represent this matrix.
 	// The number of rows is the number of rows in the matrix, but
