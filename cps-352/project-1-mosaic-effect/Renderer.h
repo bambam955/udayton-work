@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cmath>
 #include <vector>
 #include <opencv2/core/core.hpp>
 
@@ -41,13 +42,18 @@ private:
 		{
 			p1 = _p1;
 			p2 = _p2;
+			finalize();
 		}
 
+		void finalize() {
+			p1 = cv::Point(std::min(p1.x, p2.x), std::min(p1.y, p2.y));
+			p2 = cv::Point(std::max(p1.x, p2.x), std::max(p1.y, p2.y));
+		}
 		void clear() { p1 = p2 = cv::Point(-1, -1); }
 	};
 
 	void updateAllBlurredRegions();
-	void blurRegion(const Corners& corners);
+	void blurRegion(cv::Mat& img, const Corners& corners);
 
 	cv::String m_windowName = "";
 	cv::String m_imgName = "";

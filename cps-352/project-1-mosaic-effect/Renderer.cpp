@@ -71,39 +71,13 @@ void Renderer::redrawCurrentRect(int x, int y)
 void Renderer::saveCurrentRect()
 {
 	// Add the current rectangle to the last image so that it won't be erased during future redrawing.
-	rectangle(m_lastImg, m_currPoints.p1, m_currPoints.p2, Scalar(0, 255, 255));
-	blurRegion(m_currPoints);
+	m_currPoints.finalize();
+	blurRegion(m_lastImg, m_currPoints);
 	m_lastImg.copyTo(m_currentImg);
 	// Add this rectangle to the history.
 	m_rectHistory.push_back(Corners(m_currPoints.p1, m_currPoints.p2));
 	// Reset the points to be invalid until we start drawing again.
 	m_currPoints.clear();
-}
-
-void Renderer::increaseBlurDegree()
-{
-	if (m_blurDegree < 5)
-		++m_blurDegree;
-	else
-		m_blurDegree += 5;
-
-	printf("New blur degree: %d\n", m_blurDegree);
-	updateAllBlurredRegions();
-}
-
-void Renderer::decreaseBlurDegree()
-{
-	// Make sure we can't go below 1.
-	if (m_blurDegree <= 1)
-		return;
-
-	if (m_blurDegree <= 5)
-		--m_blurDegree;
-	else
-		m_blurDegree -= 5;
-
-	printf("New blur degree: %d\n", m_blurDegree);
-	updateAllBlurredRegions();
 }
 
 void Renderer::saveImageToFiles()
@@ -119,38 +93,82 @@ void Renderer::saveImageToFiles()
 	}
 }
 
+void Renderer::increaseBlurDegree()
+{
+	if (m_blurDegree < 5)
+		++m_blurDegree;
+	else
+		m_blurDegree += 5;
+
+	// Re-blur all the regions that were previously selected.
+	printf("New blur degree: %d\n", m_blurDegree);
+	updateAllBlurredRegions();
+}
+
+void Renderer::decreaseBlurDegree()
+{
+	// Make sure we can't go below 1.
+	if (m_blurDegree <= 1)
+		return;
+
+	if (m_blurDegree <= 5)
+		--m_blurDegree;
+	else
+		m_blurDegree -= 5;
+
+	// Re-blur all the regions that were previously selected.
+	printf("New blur degree: %d\n", m_blurDegree);
+	updateAllBlurredRegions();
+}
+
 void Renderer::updateAllBlurredRegions()
 {
+	if (m_rectHistory.empty())
+		return;
+
+	// Bring everything back to the original image.
+	m_originalImg.copyTo(m_currentImg);
+	m_originalImg.copyTo(m_lastImg);
+
+	// Blur the saved regions again according to the new blur degree.
 	for (const Corners& corners : m_rectHistory)
 	{
 		printf("P1 (%d, %d), P2 (%d, %d)\n", corners.p1.x, corners.p1.y, corners.p2.x, corners.p2.y);
-		blurRegion(corners);
+		blurRegion(m_lastImg, corners);
 	}
+
+	// Copy the re-blurred regions back to the current image.
+	m_lastImg.copyTo(m_currentImg);
 }
 
-void Renderer::blurRegion(const Corners& corners)
+void Renderer::blurRegion(Mat& img, const Corners& corners)
 {
-	unsigned char** arr2D = new unsigned char*[m_currentImg.rows];
-	for (int y = 0; y < m_currentImg.rows; y++)
+	// Create a 2D array to represent this matrix.
+	// The number of rows is the number of rows in the matrix, but
+	// number of columns will be columns * 3 because each pixel has three channels.
+	rectangle(img, corners.p1, corners.p2, Scalar(0, 255, 255));
+
+	unsigned char** arr2D = new unsigned char*[img.rows];
+	for (int y = 0; y < img.rows; y++)
 	{
-		arr2D[y] = new unsigned char[m_currentImg.cols * 3];
-		memcpy(arr2D[y], m_currentImg.data + y * m_currentImg.cols * 3, m_currentImg.cols * 3);
+		arr2D[y] = new unsigned char[img.cols * 3];
+		memcpy(arr2D[y], img.data + y * img.cols * 3, img.cols * 3);
 	}
 
-	for (int y = corners.p1.y; y < corners.p2.y; y++)
+	for (int y = corners.p1.y; y < corners.p2.y; y+=1)
 	{
-		for (int x = corners.p1.x; x < corners.p2.x; x++)
+		for (int x = corners.p1.x; x < corners.p2.x; x+= 1)
 		{
-			arr2D[y][x * 3 + 0] *= 2; // Blue
-			arr2D[y][x * 3 + 1] *= 2; // Green
-			arr2D[y][x * 3 + 2] *= 2; // Red
+			arr2D[y][x * 3 + 0] *= m_blurDegree; // Blue
+			arr2D[y][x * 3 + 1] *= m_blurDegree; // Green
+			arr2D[y][x * 3 + 2] *= m_blurDegree; // Red
 		}
 	}
 
 	for (int y = corners.p1.y; y < corners.p2.y; y++)
 	{
-		memcpy(m_currentImg.data + y * m_currentImg.cols * 3, arr2D[y], m_currentImg.cols * 3);
+		memcpy(img.data + y * img.cols * 3, arr2D[y], img.cols * 3);
 	}
 
-	return;
+	delete[] arr2D;
 }
