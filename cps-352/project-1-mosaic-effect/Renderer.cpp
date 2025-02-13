@@ -147,6 +147,12 @@ void Renderer::updateAllBlurredRegions()
 
 void Renderer::blurRegion(Mat& img, const Corners& corners) const
 {
+	Corners insetCorners = corners;
+	insetCorners.p1.x += RECT_THICKNESS;
+	insetCorners.p2.x -= RECT_THICKNESS;
+	insetCorners.p1.y += RECT_THICKNESS;
+	insetCorners.p2.y -= RECT_THICKNESS;
+
 	unsigned char** arr2D = new unsigned char* [img.rows];
 	for (int y = 0; y < img.rows; y++)
 	{
@@ -154,18 +160,18 @@ void Renderer::blurRegion(Mat& img, const Corners& corners) const
 		memcpy(arr2D[y], img.data + y * img.cols * 3, img.cols * 3);
 	}
 
-	Point oldPoint = corners.p1;
-	for (int x = corners.p1.x + 1; x < corners.p2.x; ++x)
+	Point oldPoint = insetCorners.p1;
+	for (int x = insetCorners.p1.x + 2; x < insetCorners.p2.x - 1; ++x)
 	{
 		//printf("Testing X-coord %d...\n", x);
-		if ((x - corners.p1.x) % m_blurDegree != 0)
+		if ((x - insetCorners.p1.x) % m_blurDegree != 0)
 			continue;
 		//printf("X-coord %d VALID!!\n", x);
 
-		for (int y = corners.p1.y + 1; y < corners.p2.y; ++y)
+		for (int y = insetCorners.p1.y + 2; y < insetCorners.p2.y - 1; ++y)
 		{
 			//printf("Testing Y-coord %d...\n", y);
-			if ((y - corners.p1.y) % m_blurDegree != 0)
+			if ((y - insetCorners.p1.y) % m_blurDegree != 0)
 				continue;
 
 			//printf("Y-coord %d VALID!!\n", y);
@@ -203,9 +209,9 @@ void Renderer::blurRegion(Mat& img, const Corners& corners) const
 			oldPoint.y = y;
 			//return;
 		}
-		oldPoint = Point(x, corners.p1.y);
+		oldPoint = Point(x, insetCorners.p1.y);
 	}
-	for (int y = corners.p1.y; y < corners.p2.y; y++)
+	for (int y = insetCorners.p1.y; y < insetCorners.p2.y; y++)
 	{
 		memcpy(img.data + y * img.cols * 3, arr2D[y], img.cols * 3);
 	}

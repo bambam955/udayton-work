@@ -4,6 +4,8 @@
 #include <vector>
 #include <opencv2/core/core.hpp>
 
+#define RECT_THICKNESS 1
+
 class Renderer
 {
 public:
@@ -77,5 +79,4 @@ private:
 
 	// The level of blurring to add inside each rectangle.
 	unsigned int m_blurDegree = 5;
-
 };
