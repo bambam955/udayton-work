@@ -32,13 +32,16 @@ void InputHandler::mouseHandler(int event, int x, int y, int flag)
     }
     case MouseEventTypes::EVENT_LBUTTONUP:
     {
-        // Once the mouse is released, reset the image if it hasn't moved since being pressed.
-        // That means it was clicked. TODO: use duration checker to further validate this...
+        // Once the mouse is released, reset the image if it hasn't moved since being pressed. That means it was clicked.
         // If it has moved, then save the rectangle.
         if (m_hasMouseMovedSinceClick)
+        {
             m_renderer->saveCurrentRect();
+        }
         else
+        {
             m_renderer->resetImage();
+        }
 
         m_isDrawing = false;
         printf("drawing is off\n");
