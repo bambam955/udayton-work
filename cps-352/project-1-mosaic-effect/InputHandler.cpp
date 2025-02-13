@@ -7,7 +7,7 @@ InputHandler::InputHandler(Renderer* renderer)
     m_renderer = renderer;
     // Set the callback as the static function to fit the argument type (*).
     // Pass in this object to be returned in the callback later.
-    cv::setMouseCallback(renderer->windowName(), InputHandler::onMouse, this);
+    setMouseCallback(renderer->windowName(), InputHandler::onMouse, this);
 }
 
 void InputHandler::onMouse(int event, int x, int y, int flag, void* data)
@@ -21,7 +21,7 @@ void InputHandler::mouseHandler(int event, int x, int y, int flag)
 {
     switch (event)
     {
-    case cv::MouseEventTypes::EVENT_LBUTTONDOWN:
+    case MouseEventTypes::EVENT_LBUTTONDOWN:
     {
         // Save the top left point and set status variables.
         m_renderer->saveTopLeft(x, y);
@@ -30,7 +30,7 @@ void InputHandler::mouseHandler(int event, int x, int y, int flag)
         printf("drawing is on\n");
         break;
     }
-    case cv::MouseEventTypes::EVENT_LBUTTONUP:
+    case MouseEventTypes::EVENT_LBUTTONUP:
     {
         // Once the mouse is released, reset the image if it hasn't moved since being pressed.
         // That means it was clicked. TODO: use duration checker to further validate this...
@@ -44,7 +44,7 @@ void InputHandler::mouseHandler(int event, int x, int y, int flag)
         printf("drawing is off\n");
         break;
     }
-    case cv::MouseEventTypes::EVENT_MOUSEMOVE:
+    case MouseEventTypes::EVENT_MOUSEMOVE:
     {
         // Set the flag so we know for the future.
         m_hasMouseMovedSinceClick = true;
@@ -62,7 +62,7 @@ void InputHandler::mouseHandler(int event, int x, int y, int flag)
 
 bool InputHandler::handleKeyPresses()
 {
-    const char c = cv::waitKey(100);
+    const char c = waitKey(100);
 
     switch (c)
     {
@@ -84,11 +84,12 @@ bool InputHandler::handleKeyPresses()
         break;
     case 's':
     case 'S':
-        if (m_isDrawing)
-            break;
-        m_renderer->saveImageToFiles();
+        if (!m_isDrawing)
+            m_renderer->saveImageToFiles();
         break;
     default:
         break;
     }
+
+    return true;
 }

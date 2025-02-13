@@ -36,8 +36,10 @@ void Renderer::resetImage()
 	// Bring everything back to the original image.
 	m_originalImg.copyTo(m_currentImg);
 	m_originalImg.copyTo(m_lastImg);
+
 	// Reset the current points back to defaults.
 	m_currPoints.clear();
+
 	// Clear the history.
 	m_rectHistory.clear();
 }
@@ -51,8 +53,6 @@ void Renderer::saveTopLeft(int x, int y)
 {
 	// Set the top left corner of the current rectangle.
 	m_currPoints.p1 = Point(x, y);
-	// Create a little circle at the point's location.
-	circle(m_currentImg, m_currPoints.p1, 1, Scalar(0, 255, 255), 3);
 }
 
 void Renderer::redrawCurrentRect(int x, int y)
@@ -64,19 +64,27 @@ void Renderer::redrawCurrentRect(int x, int y)
 	// Remove the previous current rectangle so that we can redraw it with the new bottom right corner.
 	m_lastImg.copyTo(m_currentImg);
 	m_currPoints.p2 = Point(x, y);
+
 	// Redraw the rectangle.
-	rectangle(m_currentImg, m_currPoints.p1, m_currPoints.p2, Scalar(0, 255, 255));
+	rectangle(m_currentImg, m_currPoints.p1, m_currPoints.p2, Scalar(0, 255, 255), RECT_THICKNESS);
 }
 
 void Renderer::saveCurrentRect()
 {
 	// Add the current rectangle to the last image so that it won't be erased during future redrawing.
 	m_currPoints.finalize();
-	rectangle(m_lastImg, m_currPoints.p1, m_currPoints.p2, Scalar(0, 255, 255));
+	rectangle(m_lastImg, m_currPoints.p1, m_currPoints.p2, Scalar(0, 255, 255), RECT_THICKNESS);
+
+	// Debug the dimensions of the rectangle that is being drawn.
+	printf("P1 (%d, %d), P2 (%d, %d)\n", m_currPoints.p1.x, m_currPoints.p1.y, m_currPoints.p2.x, m_currPoints.p2.y);
+
+	// Blur the region inside the rectangle, then copy the results to the current image.
 	blurRegion(m_lastImg, m_currPoints);
 	m_lastImg.copyTo(m_currentImg);
+
 	// Add this rectangle to the history.
 	m_rectHistory.push_back(Corners(m_currPoints.p1, m_currPoints.p2));
+
 	// Reset the points to be invalid until we start drawing again.
 	m_currPoints.clear();
 }
@@ -96,6 +104,7 @@ void Renderer::saveImageToFiles()
 
 void Renderer::increaseBlurDegree()
 {
+	// Increase by 1 if under 5, increase by 5 otherwise.
 	if (m_blurDegree < 5)
 		++m_blurDegree;
 	else
@@ -112,6 +121,9 @@ void Renderer::decreaseBlurDegree()
 	if (m_blurDegree <= 1)
 		return;
 
+	// Decrease by 1 if at or under 5, decrease by 5 otherwise.
+	// Note that because increasing works the same way, we don't have to worry about
+	// going from, say, 6 to 1; the only allowable degrees above 5 are multiples of 5.
 	if (m_blurDegree <= 5)
 		--m_blurDegree;
 	else
@@ -124,6 +136,7 @@ void Renderer::decreaseBlurDegree()
 
 void Renderer::updateAllBlurredRegions()
 {
+	// Do nothing if there are no rectangles to update.
 	if (m_rectHistory.empty())
 		return;
 
@@ -134,10 +147,13 @@ void Renderer::updateAllBlurredRegions()
 	// Blur the saved regions again according to the new blur degree.
 	for (const Corners& corners : m_rectHistory)
 	{
+		// Re-draw the rectangle for this region.
+		rectangle(m_lastImg, corners.p1, corners.p2, Scalar(0, 255, 255), RECT_THICKNESS);
+		
+		// Debug the dimensions of the rectangle that is being drawn.
 		printf("P1 (%d, %d), P2 (%d, %d)\n", corners.p1.x, corners.p1.y, corners.p2.x, corners.p2.y);
 
-		rectangle(m_lastImg, corners.p1, corners.p2, Scalar(0, 255, 255));
-
+		// Blur the region again according to the new blur degree.
 		blurRegion(m_lastImg, corners);
 	}
 
@@ -147,12 +163,15 @@ void Renderer::updateAllBlurredRegions()
 
 void Renderer::blurRegion(Mat& img, const Corners& corners) const
 {
+	// Modify the region's corners to be fully inside the rectangle.
+	// This way, when the rectangle is drawn, the blurred squares won't overlap with it.
 	Corners insetCorners = corners;
 	insetCorners.p1.x += RECT_THICKNESS;
 	insetCorners.p2.x -= RECT_THICKNESS;
 	insetCorners.p1.y += RECT_THICKNESS;
 	insetCorners.p2.y -= RECT_THICKNESS;
 
+	// Copy the entire image to a 2D array to make it easier to work with.
 	unsigned char** arr2D = new unsigned char* [img.rows];
 	for (int y = 0; y < img.rows; y++)
 	{
@@ -160,57 +179,65 @@ void Renderer::blurRegion(Mat& img, const Corners& corners) const
 		memcpy(arr2D[y], img.data + y * img.cols * 3, img.cols * 3);
 	}
 
-	Point oldPoint = insetCorners.p1;
-	for (int x = insetCorners.p1.x + 2; x < insetCorners.p2.x - 1; ++x)
+	// This will hold the top-left point of the next square to blur. It starts at the top-left of the region.
+	Point nextP1 = insetCorners.p1;
+
+
+
+	// THIS IS WHERE THE MAGIC HAPPENS!!!
+
+	// Iterate through the entire region inside the rectangle. Start with p1 + 1 because we shouldn't ever have a square with area 0.
+	for (int x = insetCorners.p1.x + 1; x < insetCorners.p2.x; ++x)
 	{
-		//printf("Testing X-coord %d...\n", x);
+		// If this x-value doesn't mark the end of a new square, then continue on from left to right.
 		if ((x - insetCorners.p1.x) % m_blurDegree != 0)
 			continue;
-		//printf("X-coord %d VALID!!\n", x);
 
-		for (int y = insetCorners.p1.y + 2; y < insetCorners.p2.y - 1; ++y)
+		// But, if it does, then go from top to bottom and blur the whole column of squares one at a time.
+		for (int y = insetCorners.p1.y + 1; y < insetCorners.p2.y; ++y)
 		{
-			//printf("Testing Y-coord %d...\n", y);
+			// Wait until we find the vertical end of new square...
 			if ((y - insetCorners.p1.y) % m_blurDegree != 0)
 				continue;
 
-			//printf("Y-coord %d VALID!!\n", y);
-
-			Point newP2 = Point(x, y);
-
 			int sumBlue = 0, sumGreen = 0, sumRed = 0;
-			const int TOTAL_PIXELS = (newP2.y - oldPoint.y) * (newP2.x - oldPoint.x);
-			for (int y = oldPoint.y; y < newP2.y; y += 1)
+			// Sum up the red, green, and blue within the square.
+			for (int y2 = nextP1.y; y2 < y; ++y2)
 			{
-				for (int x = oldPoint.x; x < newP2.x; x += 1)
+				for (int x2 = nextP1.x; x2 < x; ++x2)
 				{
-					sumBlue += arr2D[y][x * 3 + 0]; // Blue
-					sumGreen += arr2D[y][x * 3 + 1]; // Green
-					sumRed += arr2D[y][x * 3 + 2]; // Red
+					sumBlue += arr2D[y2][x2 * 3 + 0]; // Blue
+					sumGreen += arr2D[y2][x2 * 3 + 1]; // Green
+					sumRed += arr2D[y2][x2 * 3 + 2]; // Red
 				}
 			}
 
+			// Compute the average RGB values.
+			const int TOTAL_PIXELS = (y - nextP1.y) * (x - nextP1.x);
 			int avgBlue = sumBlue / TOTAL_PIXELS;
 			int avgGreen = sumGreen / TOTAL_PIXELS;
 			int avgRed = sumRed / TOTAL_PIXELS;
 
-
-			for (int y = oldPoint.y; y < newP2.y; y++)
+			// Finally loop back through and assign each pixel to have the average RGB values for that square.
+			for (int y2 = nextP1.y; y2 < y; ++y2)
 			{
-				for (int x = oldPoint.x; x < newP2.x; x++)
+				for (int x2 = nextP1.x; x2 < x; ++x2)
 				{
-					arr2D[y][x * 3 + 0] = avgBlue;
-					arr2D[y][x * 3 + 1] = avgGreen;
-					arr2D[y][x * 3 + 2] = avgRed;
+					arr2D[y2][x2 * 3 + 0] = avgBlue;
+					arr2D[y2][x2 * 3 + 1] = avgGreen;
+					arr2D[y2][x2 * 3 + 2] = avgRed;
 				}
 			}
 
-
-			oldPoint.y = y;
-			//return;
+			// Send the y-value of the next top-left point to the bottom of the current square (top of the next square).
+			nextP1.y = y;
 		}
-		oldPoint = Point(x, insetCorners.p1.y);
+
+		// Once we blur the whole column, the next top-left point will be at the current x-value, with y being the top of the region.
+		nextP1 = Point(x, insetCorners.p1.y);
 	}
+
+	// Copy the data back to the image.
 	for (int y = insetCorners.p1.y; y < insetCorners.p2.y; y++)
 	{
 		memcpy(img.data + y * img.cols * 3, arr2D[y], img.cols * 3);
