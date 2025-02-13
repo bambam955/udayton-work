@@ -66,14 +66,14 @@ void Renderer::redrawCurrentRect(int x, int y)
 	m_currPoints.p2 = Point(x, y);
 
 	// Redraw the rectangle.
-	rectangle(m_currentImg, m_currPoints.p1, m_currPoints.p2, Scalar(0, 255, 255), RECT_THICKNESS);
+	rectangle(m_currentImg, m_currPoints.p1, m_currPoints.p2, RECT_COLOR, RECT_THICKNESS);
 }
 
 void Renderer::saveCurrentRect()
 {
 	// Add the current rectangle to the last image so that it won't be erased during future redrawing.
 	m_currPoints.finalize();
-	rectangle(m_lastImg, m_currPoints.p1, m_currPoints.p2, Scalar(0, 255, 255), RECT_THICKNESS);
+	rectangle(m_lastImg, m_currPoints.p1, m_currPoints.p2, RECT_COLOR, RECT_THICKNESS);
 
 	// Debug the dimensions of the rectangle that is being drawn.
 	printf("P1 (%d, %d), P2 (%d, %d)\n", m_currPoints.p1.x, m_currPoints.p1.y, m_currPoints.p2.x, m_currPoints.p2.y);
@@ -148,7 +148,7 @@ void Renderer::updateAllBlurredRegions()
 	for (const Corners& corners : m_rectHistory)
 	{
 		// Re-draw the rectangle for this region.
-		rectangle(m_lastImg, corners.p1, corners.p2, Scalar(0, 255, 255), RECT_THICKNESS);
+		rectangle(m_lastImg, corners.p1, corners.p2, RECT_COLOR, RECT_THICKNESS);
 		
 		// Debug the dimensions of the rectangle that is being drawn.
 		printf("P1 (%d, %d), P2 (%d, %d)\n", corners.p1.x, corners.p1.y, corners.p2.x, corners.p2.y);

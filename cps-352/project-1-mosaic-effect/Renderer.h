@@ -4,6 +4,7 @@
 #include <vector>
 #include <opencv2/core/core.hpp>
 
+#define RECT_COLOR cv::Scalar(0, 0, 255)
 #define RECT_THICKNESS 1
 
 class Renderer
