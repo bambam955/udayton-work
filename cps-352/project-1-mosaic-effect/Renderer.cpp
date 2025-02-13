@@ -179,25 +179,27 @@ void Renderer::blurRegion(Mat& img, const Corners& corners) const
 		memcpy(arr2D[y], img.data + y * img.cols * 3, img.cols * 3);
 	}
 
-	// This will hold the top-left point of the next square to blur. It starts at the top-left of the region.
-	Point nextP1 = insetCorners.p1;
 
 
 
 	// THIS IS WHERE THE MAGIC HAPPENS!!!
 
+	// This will hold the top-left point of the next square to blur. It starts at the top-left of the region.
+	Point nextP1 = insetCorners.p1;
 	// Iterate through the entire region inside the rectangle. Start with p1 + 1 because we shouldn't ever have a square with area 0.
 	for (int x = insetCorners.p1.x + 1; x < insetCorners.p2.x; ++x)
 	{
 		// If this x-value doesn't mark the end of a new square, then continue on from left to right.
-		if ((x - insetCorners.p1.x) % m_blurDegree != 0)
+		if (((x - insetCorners.p1.x) % m_blurDegree != 0) &&
+			(x + 1 != insetCorners.p2.x))
 			continue;
 
 		// But, if it does, then go from top to bottom and blur the whole column of squares one at a time.
 		for (int y = insetCorners.p1.y + 1; y < insetCorners.p2.y; ++y)
 		{
 			// Wait until we find the vertical end of new square...
-			if ((y - insetCorners.p1.y) % m_blurDegree != 0)
+			if (((y - insetCorners.p1.y) % m_blurDegree != 0) &&
+				(y + 1 != insetCorners.p2.y))
 				continue;
 
 			int sumBlue = 0, sumGreen = 0, sumRed = 0;
@@ -238,7 +240,7 @@ void Renderer::blurRegion(Mat& img, const Corners& corners) const
 	}
 
 	// Copy the data back to the image.
-	for (int y = insetCorners.p1.y; y < insetCorners.p2.y; y++)
+	for (int y = insetCorners.p1.y; y < insetCorners.p2.y; ++y)
 	{
 		memcpy(img.data + y * img.cols * 3, arr2D[y], img.cols * 3);
 	}
