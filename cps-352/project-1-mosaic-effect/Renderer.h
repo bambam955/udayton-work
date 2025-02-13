@@ -77,4 +77,5 @@ private:
 
 	// The level of blurring to add inside each rectangle.
 	unsigned int m_blurDegree = 5;
+
 };

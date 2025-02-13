@@ -72,6 +72,7 @@ void Renderer::saveCurrentRect()
 {
 	// Add the current rectangle to the last image so that it won't be erased during future redrawing.
 	m_currPoints.finalize();
+	rectangle(m_lastImg, m_currPoints.p1, m_currPoints.p2, Scalar(0, 255, 255));
 	blurRegion(m_lastImg, m_currPoints);
 	m_lastImg.copyTo(m_currentImg);
 	// Add this rectangle to the history.
@@ -134,6 +135,9 @@ void Renderer::updateAllBlurredRegions()
 	for (const Corners& corners : m_rectHistory)
 	{
 		printf("P1 (%d, %d), P2 (%d, %d)\n", corners.p1.x, corners.p1.y, corners.p2.x, corners.p2.y);
+
+		rectangle(m_lastImg, corners.p1, corners.p2, Scalar(0, 255, 255));
+
 		blurRegion(m_lastImg, corners);
 	}
 
@@ -143,45 +147,64 @@ void Renderer::updateAllBlurredRegions()
 
 void Renderer::blurRegion(Mat& img, const Corners& corners) const
 {
-	rectangle(img, corners.p1, corners.p2, Scalar(0, 255, 255));
-
-	// Create a 2D array to represent this matrix.
-	// The number of rows is the number of rows in the matrix, but
-	// number of columns will be columns * 3 because each pixel has three channels.
-	unsigned char** arr2D = new unsigned char*[img.rows];
+	unsigned char** arr2D = new unsigned char* [img.rows];
 	for (int y = 0; y < img.rows; y++)
 	{
 		arr2D[y] = new unsigned char[img.cols * 3];
 		memcpy(arr2D[y], img.data + y * img.cols * 3, img.cols * 3);
 	}
 
-	int sumBlue = 0, sumGreen = 0, sumRed = 0;
-	const int TOTAL_PIXELS = (corners.p2.y - corners.p1.y) * (corners.p2.x - corners.p1.x);
-	for (int y = corners.p1.y; y < corners.p2.y; y+=1)
+	Point oldPoint = corners.p1;
+	for (int x = corners.p1.x + 1; x < corners.p2.x; ++x)
 	{
-		for (int x = corners.p1.x; x < corners.p2.x; x+= 1)
+		//printf("Testing X-coord %d...\n", x);
+		if ((x - corners.p1.x) % m_blurDegree != 0)
+			continue;
+		//printf("X-coord %d VALID!!\n", x);
+
+		for (int y = corners.p1.y + 1; y < corners.p2.y; ++y)
 		{
-			sumBlue += arr2D[y][x * 3 + 0]; // Blue
-			sumGreen += arr2D[y][x * 3 + 1]; // Green
-			sumRed += arr2D[y][x * 3 + 2]; // Red
+			//printf("Testing Y-coord %d...\n", y);
+			if ((y - corners.p1.y) % m_blurDegree != 0)
+				continue;
+
+			//printf("Y-coord %d VALID!!\n", y);
+
+			Point newP2 = Point(x, y);
+
+			int sumBlue = 0, sumGreen = 0, sumRed = 0;
+			const int TOTAL_PIXELS = (newP2.y - oldPoint.y) * (newP2.x - oldPoint.x);
+			for (int y = oldPoint.y; y < newP2.y; y += 1)
+			{
+				for (int x = oldPoint.x; x < newP2.x; x += 1)
+				{
+					sumBlue += arr2D[y][x * 3 + 0]; // Blue
+					sumGreen += arr2D[y][x * 3 + 1]; // Green
+					sumRed += arr2D[y][x * 3 + 2]; // Red
+				}
+			}
+
+			int avgBlue = sumBlue / TOTAL_PIXELS;
+			int avgGreen = sumGreen / TOTAL_PIXELS;
+			int avgRed = sumRed / TOTAL_PIXELS;
+
+
+			for (int y = oldPoint.y; y < newP2.y; y++)
+			{
+				for (int x = oldPoint.x; x < newP2.x; x++)
+				{
+					arr2D[y][x * 3 + 0] = avgBlue;
+					arr2D[y][x * 3 + 1] = avgGreen;
+					arr2D[y][x * 3 + 2] = avgRed;
+				}
+			}
+
+
+			oldPoint.y = y;
+			//return;
 		}
+		oldPoint = Point(x, corners.p1.y);
 	}
-
-	int avgBlue = sumBlue / TOTAL_PIXELS;
-	int avgGreen = sumGreen / TOTAL_PIXELS;
-	int avgRed = sumRed / TOTAL_PIXELS;
-
-
-	for (int y = corners.p1.y; y < corners.p2.y; y++)
-	{
-		for (int x = corners.p1.x; x < corners.p2.x; x++)
-		{
-			arr2D[y][x * 3 + 0] = avgBlue;
-			arr2D[y][x * 3 + 1] = avgGreen;
-			arr2D[y][x * 3 + 2] = avgRed;
-		}
-	}
-
 	for (int y = corners.p1.y; y < corners.p2.y; y++)
 	{
 		memcpy(img.data + y * img.cols * 3, arr2D[y], img.cols * 3);
