@@ -15,6 +15,8 @@ public:
 
 	// Get the name of the window.
 	cv::String windowName() const;
+	// Get whether the image name is valid.
+	bool isFileValid() const;
 	
 	void resetImage();
 	void displayImage() const;
@@ -63,6 +65,7 @@ private:
 
 	cv::String m_windowName = "";
 	cv::String m_imgName = "";
+	bool m_isFileValid = false;
 
 	// We save three versions of the image at all times.
 	// original - image that was initially read from the file. This is what we reset to if needed.

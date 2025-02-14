@@ -15,20 +15,29 @@ Renderer::Renderer(const String& windowName, const String& imgName)
 	m_originalImg = imread(m_imgName);
 	if (m_originalImg.empty())
 	{
+		m_isFileValid = false;
 		fprintf(stderr, "Could not load image %s!\n", m_imgName.c_str());
-		return;
 	}
+	else
+	{
+		m_isFileValid = true;
 
-	// Set the points and other images to their initial states.
-	resetImage();
+		// Set the points and other images to their initial states.
+		resetImage();
 
-	// Create the window to display the image in.
-	namedWindow(m_windowName);
+		// Create the window to display the image in.
+		namedWindow(m_windowName);
+	}
 }
 
 String Renderer::windowName() const
 {
 	return m_windowName;
+}
+
+bool Renderer::isFileValid() const
+{
+	return m_isFileValid;
 }
 
 void Renderer::resetImage()
