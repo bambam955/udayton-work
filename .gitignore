@@ -5,3 +5,5 @@
 ## Project-specific VS stuff
 **/Project1.d17233cc/
 
+## VS Code stuff that I don't actually need
+**/.vscode/
