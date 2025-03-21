@@ -1,6 +1,6 @@
 # CPS 352 Notes
 
-This class uses the OpenCV library for C++ a lot.
+This class uses the OpenCV library for C++.
 
 To use it properly within Visual Studio, you have to configure some things project by project.
 
@@ -17,4 +17,3 @@ To use it properly within Visual Studio, you have to configure some things proje
 9. Build and run the project once to create the build directory (should be `<sln-directory\x64\Debug`).
 10. Copy the file `opencv_world4110d.dll` from `<opencv-lib-loc>\opencv\build\x64\vc16\bin` to your build directory.
 11. Run the project again. It should work fine this time.
-
