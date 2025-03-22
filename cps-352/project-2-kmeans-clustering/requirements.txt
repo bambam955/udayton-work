@@ -1,4 +1,3 @@
 Pillow
 matplotlib
 numpy
-tkinter

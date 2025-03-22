@@ -4,34 +4,33 @@ matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.widgets import Slider, Button
+from image_compressor import ImageCompressor
+from typing import List
 
 # List of image filenames
 image_filenames = ["images/test1.jpg", "images/test2.jpg"]
+image_compressor_list: List[ImageCompressor] = []
+for i in range(len(image_filenames)):
+    image_compressor_list.append(ImageCompressor(image_filenames[i]))
 
 # Load the initial image
 current_image_index = 0
-image = Image.open(image_filenames[current_image_index])
-image_array = np.array(image) / 255.0  # Normalize to range [0, 1]
 
 # Create the initial plot
 fig, ax = plt.subplots(figsize=(8, 5))
 plt.subplots_adjust(bottom=0.3)  # Adjust space for buttons and slider
-ax.set_title("Brightness Adjustment")
+ax.set_title("K-Means Clustering")
 ax.axis('off')
 
 # Display the initial image
-img_display = ax.imshow(image_array)
-
-# Add a slider for brightness control
-ax_slider = plt.axes([0.25, 0.1, 0.5, 0.03])  # x, y, width, height
-slider = Slider(ax_slider, 'Clusters', 1, 64, valinit=1, valstep=1)
+img_display = ax.imshow(image_compressor_list[current_image_index].get_image(0))
 
 # Update function for slider
-def update(val):
-    scale = slider.val
+def update(means):
     # Scale the brightness of the image
-    adjusted_image = np.clip(image_array * scale, 0, 1)  # Keep values in range [0, 1]
-    img_display.set_data(adjusted_image)  # Update the displayed image
+    image_compressor_list[current_image_index].kmeans(means)
+    # adjusted_image = np.clip(image_array * scale, 0, 1)  # Keep values in range [0, 1]
+    img_display.set_data(image_compressor_list[current_image_index].get_image(means))  # Update the displayed image
     fig.canvas.draw_idle()  # Redraw the canvas
 
 # Function to load and display the next/previous image
@@ -51,6 +50,10 @@ def change_image(direction):
     fig.canvas.draw_idle()  # Redraw the canvas
 
 def main():
+    # Add a slider for brightness control
+    ax_slider = plt.axes([0.25, 0.1, 0.5, 0.03])  # x, y, width, height
+    slider = Slider(ax_slider, 'Clusters', 0, 64, valinit=0, valstep=1)
+
     # Add "Previous" and "Next" buttons
     ax_prev = plt.axes([0.1, 0.01, 0.1, 0.075])  # x, y, width, height
     ax_next = plt.axes([0.8, 0.01, 0.1, 0.075])
@@ -63,7 +66,7 @@ def main():
     button_next.on_clicked(lambda event: change_image('next'))
 
     # Connect the slider to the update function
-    slider.on_changed(update)
+    slider.on_changed(lambda event: update(slider.val))
 
     # Show the plot
     plt.show()
