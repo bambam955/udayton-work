@@ -24,7 +24,7 @@ img_display = ax.imshow(image_array)
 
 # Add a slider for brightness control
 ax_slider = plt.axes([0.25, 0.1, 0.5, 0.03])  # x, y, width, height
-slider = Slider(ax_slider, 'Brightness', 0.1, 2.0, valinit=1.0, valstep=0.1)
+slider = Slider(ax_slider, 'Clusters', 1, 64, valinit=1, valstep=1)
 
 # Update function for slider
 def update(val):
@@ -50,19 +50,23 @@ def change_image(direction):
     img_display.set_data(image_array)  # Update the displayed image
     fig.canvas.draw_idle()  # Redraw the canvas
 
-# Add "Previous" and "Next" buttons
-ax_prev = plt.axes([0.1, 0.01, 0.1, 0.075])  # x, y, width, height
-ax_next = plt.axes([0.8, 0.01, 0.1, 0.075])
+def main():
+    # Add "Previous" and "Next" buttons
+    ax_prev = plt.axes([0.1, 0.01, 0.1, 0.075])  # x, y, width, height
+    ax_next = plt.axes([0.8, 0.01, 0.1, 0.075])
 
-button_prev = Button(ax_prev, 'Previous')
-button_next = Button(ax_next, 'Next')
+    button_prev = Button(ax_prev, 'Previous')
+    button_next = Button(ax_next, 'Next')
 
-# Define the button callbacks
-button_prev.on_clicked(lambda event: change_image('prev'))
-button_next.on_clicked(lambda event: change_image('next'))
+    # Define the button callbacks
+    button_prev.on_clicked(lambda event: change_image('prev'))
+    button_next.on_clicked(lambda event: change_image('next'))
 
-# Connect the slider to the update function
-slider.on_changed(update)
+    # Connect the slider to the update function
+    slider.on_changed(update)
 
-# Show the plot
-plt.show()
+    # Show the plot
+    plt.show()
+
+if __name__ == "__main__":
+    main()
