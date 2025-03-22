@@ -23,19 +23,23 @@ ax.set_title("K-Means Clustering")
 ax.axis('off')
 
 # Display the initial image
-img_display = ax.imshow(image_compressor_list[current_image_index].get_image(0))
+img_display = ax.imshow(image_compressor_list[current_image_index].get_image())
+
+# Add a slider for brightness control
+ax_slider = plt.axes([0.25, 0.1, 0.5, 0.03])  # x, y, width, height
+slider = Slider(ax_slider, 'Clusters', 0, 64, valinit=0, valstep=1)
+
 
 # Update function for slider
 def update(means):
     # Scale the brightness of the image
     image_compressor_list[current_image_index].kmeans(means)
-    # adjusted_image = np.clip(image_array * scale, 0, 1)  # Keep values in range [0, 1]
-    img_display.set_data(image_compressor_list[current_image_index].get_image(means))  # Update the displayed image
+    img_display.set_data(image_compressor_list[current_image_index].get_image())  # Update the displayed image
     fig.canvas.draw_idle()  # Redraw the canvas
 
 # Function to load and display the next/previous image
 def change_image(direction):
-    global current_image_index, image_array
+    global current_image_index
     if direction == 'next':
         # Move to the next image, wrapping around if necessary
         current_image_index = (current_image_index + 1) % len(image_filenames)
@@ -44,16 +48,11 @@ def change_image(direction):
         current_image_index = (current_image_index - 1) % len(image_filenames)
 
     # Load the new image and update the display
-    image = Image.open(image_filenames[current_image_index])
-    image_array = np.array(image) / 255.0  # Normalize to range [0, 1]
-    img_display.set_data(image_array)  # Update the displayed image
+    slider.set_val(image_compressor_list[current_image_index].current_k)
+    img_display.set_data(image_compressor_list[current_image_index].get_image())  # Update the displayed image
     fig.canvas.draw_idle()  # Redraw the canvas
 
 def main():
-    # Add a slider for brightness control
-    ax_slider = plt.axes([0.25, 0.1, 0.5, 0.03])  # x, y, width, height
-    slider = Slider(ax_slider, 'Clusters', 0, 64, valinit=0, valstep=1)
-
     # Add "Previous" and "Next" buttons
     ax_prev = plt.axes([0.1, 0.01, 0.1, 0.075])  # x, y, width, height
     ax_next = plt.axes([0.8, 0.01, 0.1, 0.075])

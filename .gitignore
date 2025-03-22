@@ -7,3 +7,6 @@
 
 ## VS Code stuff that I don't actually need
 **/.vscode/
+
+## Python-generated stuff
+**/__pycache__/
