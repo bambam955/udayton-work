@@ -2,15 +2,20 @@ import matplotlib
 from matplotlib.widgets import Slider, Button
 from image_compressor import ImageCompressor
 from typing import List
+import os
 # This part was necessary to get things running on Windows.
 # It was suggested by ChatGPT.
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 
 
-# List of image filenames. This is constant.
-IMAGE_FILE_NAMES = ["images/test1.jpg", 
-                    "images/test2.jpg"]
+# Get the list of image filenames from the "images" folder.
+IMAGE_FOLDER = 'images'
+IMAGE_FILE_NAMES = [
+    os.path.join(IMAGE_FOLDER, f)
+    for f in os.listdir(IMAGE_FOLDER)
+    if os.path.isfile(os.path.join(IMAGE_FOLDER, f))
+]
 
 # Create a list of image compressor objects, one for each image in the list.
 image_compressor_list: List[ImageCompressor] = []
