@@ -10,4 +10,4 @@ source .venv/Scripts/activate
 pip install -r requirements.txt
 ```
 
-Then, run `python Framework.py` to open the project.
+Then, run `python ui_framework.py` to open the project.
