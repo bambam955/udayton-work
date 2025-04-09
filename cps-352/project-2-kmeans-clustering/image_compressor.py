@@ -55,7 +55,7 @@ class ImageCompressor:
         
         # Generate a K-means compressed version of the pixels.
         # Note that the return value will still be a 1D array of pixels.
-        adjusted_pixels = kmeans.gen_kmeans_array(pixels, k)
+        adjusted_pixels = kmeans.gen_kmeans_array_slow(pixels, k)
         
         # Reshape the 1D array according to the height and width parameters we got earlier.
         # In other words, shape the array of pixels into an actual image.
