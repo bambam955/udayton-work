@@ -32,11 +32,11 @@ func main() {
 
 	// Print all of the relevant information about the numbers.
 	fmt.Printf("MATH STATS for %d and %d:\n", num1, num2)
-	fmt.Println("Sum\t\t= " + strconv.Itoa(num1+num2))
-	fmt.Println("Difference\t= " + strconv.Itoa(num1-num2))
-	fmt.Println("Product\t\t= " + strconv.Itoa(num1*num2))
-	fmt.Println("Average\t\t= " + strconv.FormatFloat(float64(num1+num2)/2, 'f', 2, 64))
-	fmt.Println("Distance\t= " + strconv.Itoa(int(math.Abs(float64(num1-num2)))))
-	fmt.Println("Maximum\t\t= " + strconv.Itoa(max(num1, num2)))
-	fmt.Println("Minimum\t\t= " + strconv.Itoa(min(num1, num2)))
+	fmt.Printf("Sum\t\t= %d\n", num1+num2)
+	fmt.Printf("Difference\t= %d\n", num1-num2)
+	fmt.Printf("Product\t\t= %d\n", num1*num2)
+	fmt.Printf("Average\t\t= %.2f\n", float64(num1+num2)/2)
+	fmt.Printf("Distance\t= %d\n", int(math.Abs(float64(num1-num2))))
+	fmt.Printf("Maximum\t\t= %d\n", max(num1, num2))
+	fmt.Printf("Minimum\t\t= %d\n", min(num1, num2))
 }
