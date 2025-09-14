@@ -29,9 +29,9 @@ func main() {
 
 	// Print results.
 	fmt.Println("DISTANCE CONVERSIONS")
-	fmt.Println("Meters\t= " + strconv.FormatFloat(meters, 'f', 2, 64))
+	fmt.Printf("Meters\t= %.2f\n", meters)
 	miles := meters * metersToMiles
-	fmt.Println("Miles\t= " + strconv.FormatFloat(miles, 'f', 2, 64))
-	fmt.Println("Feet\t= " + strconv.FormatFloat(miles*5280, 'f', 2, 64))
-	fmt.Println("Inches\t= " + strconv.FormatFloat(miles*5280*12, 'f', 2, 64))
+	fmt.Printf("Miles\t= %.2f\n", miles)
+	fmt.Printf("Feet\t= %.2f\n", miles*5280)
+	fmt.Printf("Inches\t= %.2f\n", +miles*5280*12)
 }
