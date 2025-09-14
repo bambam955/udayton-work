@@ -1,11 +1,13 @@
 package main
 
+// Corresponds to part 1 problem 4.
+
 import (
 	"github.com/common-nighthawk/go-figure"
 )
 
-// Corresponds to problem 1 part 4
 func main() {
+	// Print my name in morse code.
 	myFigure := figure.NewFigure("BENNETT", "morse", true)
-  	myFigure.Print()
+	myFigure.Print()
 }

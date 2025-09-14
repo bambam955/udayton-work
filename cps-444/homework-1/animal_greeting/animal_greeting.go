@@ -1,6 +1,6 @@
 package main
 
-// Corresponds to problem 1 part 5
+// Corresponds to part 1 problem 5.
 
 import (
 	"fmt"

@@ -1,16 +1,17 @@
 package main
 
+// Corresponds to part 1 problem 2.
+
 import (
 	"flag"
 	"fmt"
 )
 
-// Corresponds to part 1 problem 2
 func main() {
 	flag.Parse()
 	if flag.NArg() != 1 {
-		fmt.Println("Usage: name_box NAME");
-		return;
+		fmt.Println("Usage: name_box NAME")
+		return
 	}
 
 	PrintWithBorder(flag.Arg(0))
