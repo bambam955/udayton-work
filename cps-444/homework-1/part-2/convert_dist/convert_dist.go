@@ -8,6 +8,7 @@ import (
 	"strconv"
 )
 
+// Got the conversion rate from Google
 const metersToMiles = 0.000621371192
 
 const helpMsg string = `USAGE: convert_dist.go METERS`
