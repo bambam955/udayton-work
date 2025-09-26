@@ -2,14 +2,16 @@ package main
 
 import "fmt"
 
+const size = 10
+
 type Graph struct {
-	matrix [10][10]bool
+	matrix [size][size]bool
 }
 
-// AddEdge adds a directed edge from `from` to `to`.
+// AddEdge adds a directed edge from "from" to "to".
 func AddEdge(g *Graph, from, to int) bool {
-	if from >= 10 || to >= 10 {
-		fmt.Println("AddEdge: error: graph only has 10 vertices")
+	if from >= size || to >= size {
+		fmt.Printf("AddEdge: error: graph only has %d vertices\n", size)
 		return false
 	}
 
@@ -22,10 +24,10 @@ func AddEdge(g *Graph, from, to int) bool {
 	return true
 }
 
-// HasEdge checks if there is a directed edge from `from` to `to`.
+// HasEdge checks if there is a directed edge from "from" to "to".
 func HasEdge(g *Graph, from, to int) bool {
-	if from >= 10 || to >= 10 {
-		fmt.Println("HasEdge: error: graph only has 10 vertices")
+	if from >= size || to >= size {
+		fmt.Printf("HasEdge: error: graph only has %d vertices\n", size)
 		return false
 	}
 
