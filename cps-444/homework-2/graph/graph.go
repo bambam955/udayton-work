@@ -7,14 +7,14 @@ type Graph struct {
 }
 
 // AddEdge adds a directed edge from `from` to `to`.
-func (g *Graph) AddEdge(from, to int) bool {
+func AddEdge(g *Graph, from, to int) bool {
 	if from >= 10 || to >= 10 {
-		fmt.Println("Error: graph only has 10 vertices")
+		fmt.Println("AddEdge: error: graph only has 10 vertices")
 		return false
 	}
 
 	if from < 0 || to < 0 {
-		fmt.Println("Error: vertices must have indexes of at least 0")
+		fmt.Println("AddEdge: error: vertices must have indexes of at least 0")
 		return false
 	}
 
@@ -23,14 +23,14 @@ func (g *Graph) AddEdge(from, to int) bool {
 }
 
 // HasEdge checks if there is a directed edge from `from` to `to`.
-func (g *Graph) HasEdge(from, to int) bool {
+func HasEdge(g *Graph, from, to int) bool {
 	if from >= 10 || to >= 10 {
-		fmt.Println("Error: graph only has 10 vertices")
+		fmt.Println("HasEdge: error: graph only has 10 vertices")
 		return false
 	}
 
 	if from < 0 || to < 0 {
-		fmt.Println("Error: vertices must have indexes of at least 0")
+		fmt.Println("HasEdge: error: vertices must have indexes of at least 0")
 		return false
 	}
 
