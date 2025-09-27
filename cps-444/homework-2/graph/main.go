@@ -2,6 +2,8 @@ package main
 
 import "fmt"
 
+// This program tests the implementation of the digraph.
+
 func main() {
 	var graph Graph
 	// Add a few edges between existing vertices.
