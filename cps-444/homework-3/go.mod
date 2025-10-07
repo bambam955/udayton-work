@@ -1,4 +1,4 @@
-module homework-3
+module wc
 
 go 1.22.2
 
