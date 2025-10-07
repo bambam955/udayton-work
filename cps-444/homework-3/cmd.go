@@ -56,6 +56,7 @@ func Execute() error {
 
 	// Verify that all of the arguments passed are valid filenames.
 	files := fs.Args()
+	// If no files were passed then we will read from stdin.
 	if len(files) == 0 {
 		files = []string{""}
 	} else if err := checkInvalidFiles(files); err != nil {
@@ -69,6 +70,8 @@ func Execute() error {
 		return nil
 	}
 
+	// If at least one of the flags was passed then just use that flag.
+	// However, if no flags were passed then all the flags are true.
 	var statFlags WcStatFlags
 	if *lines || *words || *chars {
 		statFlags.showNewlines = *lines
@@ -81,7 +84,6 @@ func Execute() error {
 	}
 
 	// Output all of the file stats.
-	// TODO: read from stdin.
 	return OutputFileStats(files, statFlags)
 }
 
