@@ -48,6 +48,13 @@ func Execute() error {
 		return checkInvalidOptions(err)
 	}
 
+	// Verify that all of the arguments passed are valid filenames.
+	files := fs.Args()
+	if err := checkInvalidFiles(files); err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		return err
+	}
+
 	// Print the help message if the flag was passed.
 	if *helpFlag {
 		fs.Usage()
@@ -102,4 +109,28 @@ func checkInvalidOptions(err error) error {
 	// End with a help message.
 	fmt.Fprintf(os.Stderr, "Try 'wc --help' for more information.\n")
 	return fmt.Errorf("invalid option")
+}
+
+func checkInvalidFiles(files []string) error {
+	for _, file := range files {
+		// This is what is optionally passed to use stdin, so we can skip it.
+		if file == "-" {
+			continue
+		}
+		info, err := os.Stat(file)
+		// First, check if the file exists. If not then return that.
+		if os.IsNotExist(err) {
+			return fmt.Errorf("wc: %s: No such file or directory", file)
+		}
+		// If there is some other weird error then return that.
+		if err != nil {
+			return fmt.Errorf("wc: %s: %v", file, err)
+		}
+		// Finally, if there is no error, but the "file" is a directory, that's not allowed.
+		// Return an error explaining the problem.
+		if info.IsDir() {
+			return fmt.Errorf("wc: %s: Is a directory", file)
+		}
+	}
+	return nil
 }
