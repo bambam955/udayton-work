@@ -80,7 +80,7 @@ func Execute() error {
 
 	// Output all of the file stats.
 	// TODO: read from stdin.
-	return OutputStats(files, statFlags)
+	return OutputFileStats(files, statFlags)
 }
 
 func checkInvalidOptions(err error) error {
