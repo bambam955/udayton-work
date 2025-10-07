@@ -8,6 +8,12 @@ import (
 	"github.com/spf13/pflag"
 )
 
+type WcStatFlags struct {
+	showNewlines bool
+	showWords    bool
+	showBytes    bool
+}
+
 // Create the set of flags for our wc command.
 var fs = pflag.NewFlagSet("wc", pflag.ContinueOnError)
 var lines = fs.BoolP("lines", "l", false, "print the newline counts")
@@ -61,8 +67,20 @@ func Execute() error {
 		return nil
 	}
 
-	fmt.Printf("%t %t %t\n", *lines, *words, *chars)
-	return nil
+	var statFlags WcStatFlags
+	if *lines || *words || *chars {
+		statFlags.showNewlines = *lines
+		statFlags.showWords = *words
+		statFlags.showBytes = *chars
+	} else {
+		statFlags.showNewlines = true
+		statFlags.showWords = true
+		statFlags.showBytes = true
+	}
+
+	// Output all of the file stats.
+	// TODO: read from stdin.
+	return OutputStats(files, statFlags)
 }
 
 func checkInvalidOptions(err error) error {
