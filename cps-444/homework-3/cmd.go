@@ -56,7 +56,9 @@ func Execute() error {
 
 	// Verify that all of the arguments passed are valid filenames.
 	files := fs.Args()
-	if err := checkInvalidFiles(files); err != nil {
+	if len(files) == 0 {
+		files = []string{""}
+	} else if err := checkInvalidFiles(files); err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
 		return err
 	}

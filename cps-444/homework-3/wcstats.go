@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"os"
 	"strings"
 	"unicode"
@@ -9,6 +10,8 @@ import (
 
 // This is the main function.
 func OutputFileStats(files []string, flags WcStatFlags) error {
+	// If the first and only argument is an empty string then we should read from stdin.
+	readingStdin := files[0] == "" && len(files) == 1
 	// This slice will contain all of the stats, so that they can be outputted at the end.
 	var allStats []wcStats
 	// These will be the aggregate stats.
@@ -16,9 +19,16 @@ func OutputFileStats(files []string, flags WcStatFlags) error {
 
 	// Iterate through each of the files and count up all the newlines, words, and bytes in each one.
 	for _, file := range files {
-		contents, err := os.ReadFile(file)
-		if err != nil {
-			return err
+		var contents []byte
+		var readErr error
+		// Read text from the correct source.
+		if readingStdin {
+			contents, readErr = io.ReadAll(os.Stdin)
+		} else {
+			contents, readErr = os.ReadFile(file)
+		}
+		if readErr != nil {
+			return readErr
 		}
 
 		// Count the stats and append to the slice.
@@ -29,7 +39,13 @@ func OutputFileStats(files []string, flags WcStatFlags) error {
 		// Update the table cell size if necessary.
 		// Note that we can't output anything until we go through all of the files
 		// because we don't know in advance what the table cell size will be.
-		tableCellFmtLen = max(tableCellFmtLen, stats.determineFmtSize(flags))
+		if readingStdin {
+			// 7 is the standard size for the table when reading from stdin.
+			// Not sure why, but that's what it is.
+			tableCellFmtLen = max(7, stats.determineFmtSize(flags))
+		} else {
+			tableCellFmtLen = max(tableCellFmtLen, stats.determineFmtSize(flags))
+		}
 	}
 
 	// Print out the stats for each file.
