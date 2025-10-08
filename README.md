@@ -24,3 +24,12 @@ I also want to have the ability to version control larger projects.
 - **Professor:** Erik Buck
 - **When taken:** spring 2025
 
+## CPS 444
+
+- **Professor:** Norman Bashias
+- **When taken:** fall 2025
+
+## CPS 470
+
+- **Professor:** Tianming Zhao
+- **When taken:** fall 2025
