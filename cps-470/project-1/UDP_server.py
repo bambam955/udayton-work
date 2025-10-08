@@ -1,48 +1,67 @@
 import argparse
 import socket
-import time
-import threading
 import sys
+import threading
+import time
 
+# Define all the arguments.
 parser = argparse.ArgumentParser(description="A UDP server.")
 parser.add_argument("server_ip", help="The IP address of the server.")
 parser.add_argument("server_port", type=int, help="The port number of the server.")
-args = parser.parse_args()
+
+connection_ids = {}
+
+def main():
+    args = parser.parse_args()
+    
+    # Start the background process that periodically cleans out stale connection IDs.
+    threading.Thread(target=cleanup_conn_ids, daemon=True).start()
+    
+    # Initialize the activity timer. If there are no connections
+    # for five minutes then server exits.
+    conn_timer: threading.Timer = None
+    restart_server_conn_timer(conn_timer)
+
+    # Initialize the server socket.
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    server_socket.bind(("", args.server_port))
+
+    # Begin waiting for connections.
+    while True:
+        client_raw_req, client_addr = server_socket.recvfrom(2048)
+        client_req = client_raw_req.decode()
+        client_conn_id = int(client_req.split()[1])
+
+        restart_server_conn_timer(conn_timer)
+
+        res = ""
+        # Check to see if the client's connection ID was used already.
+        # If not, return "OK". If so, return "RESET".
+        if client_conn_id not in connection_ids:
+            connection_ids[client_conn_id] = time.time()
+            res = f"OK {client_conn_id} {client_addr[0]} {client_addr[1]}"
+        else:
+            res = f"RESET {client_conn_id}"
+
+        server_socket.sendto(res.encode(), client_addr)
 
 
-connectionIDs = {}
-
-def connIdsCleaup():
+def cleanup_conn_ids():
     while True:
         time.sleep(5)
         current = time.time()
-        to_remove = [k for k, v in connectionIDs.items() if current - v >= 60]
+        # Get a list of all the IDs whose timestamps are at least a minute old.
+        to_remove = [k for k, v in connection_ids.items() if current - v >= 60]
         for k in to_remove:
-            del connectionIDs[k]
-
-threading.Thread(target=connIdsCleaup, daemon=True).start()
+            del connection_ids[k]
 
 
-def restartConnTimer():
-    conn_timer = threading.Timer(300, sys.exit(1))
+def restart_server_conn_timer(conn_timer: threading.Timer):
+    if conn_timer:
+        conn_timer.cancel()
+    conn_timer = threading.Timer(5 * 60, sys.exit, args=(1,))
     conn_timer.start()
-conn_timer = threading.Timer(300, sys.exit(1))
 
 
-serverSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-serverSocket.bind(('', args.server_port))
-while True:
-    clientRaw, clientAddress = serverSocket.recvfrom(2048)
-    clientMsg = clientRaw.decode()
-    clientConnId = int(clientMsg.split(' ', 1)[1])
-
-    restartConnTimer()
-
-    response = ""
-    if clientConnId not in connectionIDs:
-        connectionIDs[clientConnId] = time.time()
-        response = f"OK {clientConnId} {clientAddress[0]} {clientAddress[1]}"
-    else:
-        response = f"RESET {clientConnId}"
-
-    serverSocket.sendto(response.encode(), clientAddress)
+if __name__ == "__main__":
+    main()
