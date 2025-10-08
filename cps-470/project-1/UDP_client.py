@@ -31,11 +31,13 @@ def try_connection(connection_id: int, args) -> bool:
             print(f"Connection established {connection_id} {server_address[0]} {server_address[1]}")
             success = True
         elif server_res_code == "RESET":
-            print(f"Connection Error {connection_id}")
+            print(f"Connection Error: {connection_id}: received RESET")
         else:
             print(f"Unknown response code: {server_res_code}")
+    
+    # Handle timeout errors on the data-receive portion of the process.
     except socket.timeout:
-        print(f"Error: No response from server within {int(client_socket.gettimeout() or 0)} seconds")
+        print(f"Connection Error: {connection_id}: no response from server within {int(client_socket.gettimeout() or 0)} seconds")
     
     client_socket.close()
     # Return the result of the connection attempt.
@@ -50,7 +52,7 @@ def get_valid_connection_id():
     # Iterate as many times as it takes for the user to input a proper ID.
     while True:
         try:
-            cid = int(input("Enter a new connection ID: "))
+            cid = int(input("Enter new connection ID: "))
             if is_valid_cid(cid):
                 return cid
             else:
@@ -74,7 +76,6 @@ def main():
             sys.exit(0)
 
         if i < 2:
-            print("Connection failed. Enter a new 4-digit connection ID.")
             connection_id = get_valid_connection_id()
 
     print("Connection Failure")
