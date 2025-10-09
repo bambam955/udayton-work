@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -26,7 +27,8 @@ func CreateGraphFromFile(filename string) (*Graph, error) {
 	for _, entry := range entries {
 		edgeParts := strings.Fields(entry)
 		if len(edgeParts) == 3 {
-			graph.AddEdge(edgeParts[0], edgeParts[1])
+			weight, _ := strconv.ParseInt(edgeParts[2], 10, 32)
+			graph.AddEdge(edgeParts[0], edgeParts[1], int(weight))
 		}
 	}
 	return &graph, nil
@@ -34,8 +36,7 @@ func CreateGraphFromFile(filename string) (*Graph, error) {
 
 // AddEdge adds a directed edge from "from" to "to". This is a DIGRAPH.
 // "from" and "to" must be values from 0-(size-1).
-func (g *Graph) AddEdge(from, to string) bool {
-	weight := 1
+func (g *Graph) AddEdge(from, to string, weight int) bool {
 	if !g.hasNode(from) {
 		g.createNode(from)
 	}
