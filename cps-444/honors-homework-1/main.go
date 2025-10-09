@@ -25,9 +25,12 @@ func main() {
 	fmt.Printf("start node? ")
 	fmt.Scanf("%s", &inputNode)
 
-	// node := graph.Nodes()[0]
 	for _, n := range graph.Nodes() {
-		dist, _ := graph.MinDistance(inputNode, n.Id)
+		dist, err := graph.MinDistance(inputNode, n.Id)
+		if err != nil {
+			fmt.Println(err.Error())
+			break
+		}
 		fmt.Printf("shortest distance from %s to %s: %d\n", inputNode, n.Id, dist)
 	}
 

@@ -19,6 +19,7 @@ type Graph struct {
 
 func (g *Graph) Nodes() []*GraphNode {
 	copiedNodes := make([]*GraphNode, len(g.nodes))
+	// NOTE: I had to Google how to do this
 	copy(copiedNodes, g.nodes)
 	return copiedNodes
 }
@@ -100,6 +101,8 @@ func (g *Graph) hasNode(id string) bool {
 	return g.findNode(id) != nil
 }
 
+// NOTE: I Googled "pseudocode for Dijkstra's algorithm" to help me out with this,
+// but I did not search for a Go-specific implementation.
 func (g *Graph) MinDistance(from, to string) (int, error) {
 	if !g.hasNode(from) {
 		err := fmt.Errorf("starting node %s not found", from)
