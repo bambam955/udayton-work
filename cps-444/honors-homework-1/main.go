@@ -21,9 +21,13 @@ func main() {
 
 	graph.DumpGraph()
 
-	node := graph.Nodes()[0]
+	var inputNode string
+	fmt.Printf("start node? ")
+	fmt.Scanf("%s", &inputNode)
+
+	// node := graph.Nodes()[0]
 	for _, n := range graph.Nodes() {
-		dist, _ := graph.MinDistance(node.Id, n.Id)
-		fmt.Printf("shortest distance from %s to %s: %d\n", node.Id, n.Id, dist)
+		dist, _ := graph.MinDistance(inputNode, n.Id)
+		fmt.Printf("shortest distance from %s to %s: %d\n", inputNode, n.Id, dist)
 	}
 }
