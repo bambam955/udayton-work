@@ -14,7 +14,13 @@ type GraphNode struct {
 }
 
 type Graph struct {
-	Nodes []*GraphNode
+	nodes []*GraphNode
+}
+
+func (g *Graph) Nodes() []*GraphNode {
+	copiedNodes := make([]*GraphNode, len(g.nodes))
+	copy(copiedNodes, g.nodes)
+	return copiedNodes
 }
 
 func CreateGraphFromFile(filename string) (*Graph, error) {
@@ -57,7 +63,7 @@ func (g *Graph) AddEdge(from, to string, weight int) bool {
 
 // HasEdge checks if there is a directed edge from "from" to "to".
 func (g *Graph) HasEdge(from, to string) bool {
-	for _, node := range g.Nodes {
+	for _, node := range g.nodes {
 		if node.Id == from {
 			_, exists := node.edges[g.findNode(to)]
 			return exists
@@ -65,6 +71,33 @@ func (g *Graph) HasEdge(from, to string) bool {
 	}
 
 	return false
+}
+
+func (g *Graph) createNode(id string) *GraphNode {
+	n := g.findNode(id)
+	if n != nil {
+		return n
+	}
+
+	var newNode GraphNode
+	newNode.Id = id
+	newNode.edges = make(map[*GraphNode]int)
+	g.nodes = append(g.nodes, &newNode)
+	return &newNode
+}
+
+func (g *Graph) findNode(id string) *GraphNode {
+	for _, node := range g.nodes {
+		if node.Id == id {
+			return node
+		}
+	}
+
+	return nil
+}
+
+func (g *Graph) hasNode(id string) bool {
+	return g.findNode(id) != nil
 }
 
 func (g *Graph) MinDistance(from, to string) (int, error) {
@@ -79,7 +112,7 @@ func (g *Graph) MinDistance(from, to string) (int, error) {
 
 	// This will be a map of node to current distance
 	dists := make(map[*GraphNode]int)
-	for _, n := range g.Nodes {
+	for _, n := range g.nodes {
 		dists[n] = math.MaxInt
 	}
 	dists[g.findNode(from)] = 0
@@ -88,7 +121,7 @@ func (g *Graph) MinDistance(from, to string) (int, error) {
 	// This will be a map of node ID to its previously traced node
 	preds := make(map[*GraphNode]*GraphNode)
 	// Queue of nodes
-	nodes := g.Nodes
+	nodes := g.nodes
 
 	for range nodes {
 		var closestUnvisited *GraphNode = nil
@@ -121,7 +154,7 @@ func (g *Graph) MinDistance(from, to string) (int, error) {
 }
 
 func (g *Graph) DumpGraph() {
-	for _, node := range g.Nodes {
+	for _, node := range g.nodes {
 		if len(node.edges) == 0 {
 			continue
 		}
@@ -131,31 +164,4 @@ func (g *Graph) DumpGraph() {
 		}
 		fmt.Printf("%s: [%s ]\n", node.Id, edgesStr)
 	}
-}
-
-func (g *Graph) createNode(id string) *GraphNode {
-	n := g.findNode(id)
-	if n != nil {
-		return n
-	}
-
-	var newNode GraphNode
-	newNode.Id = id
-	newNode.edges = make(map[*GraphNode]int)
-	g.Nodes = append(g.Nodes, &newNode)
-	return &newNode
-}
-
-func (g *Graph) findNode(id string) *GraphNode {
-	for _, node := range g.Nodes {
-		if node.Id == id {
-			return node
-		}
-	}
-
-	return nil
-}
-
-func (g *Graph) hasNode(id string) bool {
-	return g.findNode(id) != nil
 }
