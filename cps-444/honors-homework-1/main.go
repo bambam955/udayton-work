@@ -20,4 +20,10 @@ func main() {
 	}
 
 	graph.DumpGraph()
+
+	node := graph.Nodes[0]
+	for _, n := range graph.Nodes {
+		dist, _ := graph.MinDistance(node.Id, n.Id)
+		fmt.Printf("shortest distance from %s to %s: %d\n", node.Id, n.Id, dist)
+	}
 }
