@@ -73,6 +73,19 @@ func (g *Graph) HasEdge(from, to string) bool {
 	return false
 }
 
+func (g *Graph) DumpGraph() {
+	for _, node := range g.nodes {
+		if len(node.edges) == 0 {
+			continue
+		}
+		var edgesStr string
+		for edge, weight := range node.edges {
+			edgesStr = fmt.Sprintf("%s %s[%d]", edgesStr, edge, weight)
+		}
+		fmt.Printf("%s: [%s ]\n", node.id, edgesStr)
+	}
+}
+
 func (g *Graph) createNode(id string) {
 	if g.hasNode(id) {
 		return

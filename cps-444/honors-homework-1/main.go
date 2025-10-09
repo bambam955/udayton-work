@@ -13,9 +13,11 @@ func main() {
 		os.Exit(1)
 	}
 
-	_, err := CreateGraphFromFile(os.Args[1])
+	graph, err := CreateGraphFromFile(os.Args[1])
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v", err)
 		os.Exit(1)
 	}
+
+	graph.DumpGraph()
 }
