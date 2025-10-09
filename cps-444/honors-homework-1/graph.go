@@ -1,11 +1,10 @@
 package main
 
-import "fmt"
-
-// This constant determines the size of the graph, i.e. the number of vertices.
-// The graph is initialized with an adjacency matrix containing this many vertices,
-// identified by their index in the array.
-const size = 10
+import (
+	"fmt"
+	"os"
+	"strings"
+)
 
 type node struct {
 	id    string
@@ -14,6 +13,23 @@ type node struct {
 
 type Graph struct {
 	nodes []node
+}
+
+func CreateGraphFromFile(filename string) (*Graph, error) {
+	contents, readErr := os.ReadFile(filename)
+	if readErr != nil {
+		return nil, readErr
+	}
+
+	entries := strings.Split(string(contents), "\n")
+	var graph Graph
+	for _, entry := range entries {
+		edgeParts := strings.Fields(entry)
+		if len(edgeParts) == 3 {
+			graph.AddEdge(edgeParts[0], edgeParts[1])
+		}
+	}
+	return &graph, nil
 }
 
 // AddEdge adds a directed edge from "from" to "to". This is a DIGRAPH.
