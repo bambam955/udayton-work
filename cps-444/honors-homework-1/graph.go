@@ -153,6 +153,38 @@ func (g *Graph) MinDistance(from, to string) (int, error) {
 	return dists[g.findNode(to)], nil
 }
 
+func (g *Graph) HasCycle() bool {
+	visitedNodes = make(map[*GraphNode]bool, len(g.nodes))
+	for _, node := range g.nodes {
+		currentNodes = make(map[*GraphNode]bool, len(g.nodes))
+		if g.findCyclesWithNode(node) {
+			return true
+		}
+	}
+
+	return false
+}
+
+var visitedNodes map[*GraphNode]bool
+var currentNodes map[*GraphNode]bool
+
+func (g *Graph) findCyclesWithNode(n *GraphNode) bool {
+	visitedNodes[n] = true
+	currentNodes[n] = true
+	for neighbor, _ := range n.edges {
+		if !visitedNodes[neighbor] {
+			if g.findCyclesWithNode(neighbor) {
+				return true
+			}
+		} else if currentNodes[neighbor] {
+			return true
+		}
+	}
+
+	currentNodes[n] = false
+	return false
+}
+
 func (g *Graph) DumpGraph() {
 	for _, node := range g.nodes {
 		if len(node.edges) == 0 {

@@ -30,4 +30,10 @@ func main() {
 		dist, _ := graph.MinDistance(inputNode, n.Id)
 		fmt.Printf("shortest distance from %s to %s: %d\n", inputNode, n.Id, dist)
 	}
+
+	if graph.HasCycle() {
+		fmt.Println("The graph has a cycle")
+	} else {
+		fmt.Println("The graph does not have a cycle")
+	}
 }
