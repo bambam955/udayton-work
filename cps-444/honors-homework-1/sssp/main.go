@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"os"
+
+	"digraph"
 )
 
 // This program tests the various pieces of the digraph implementation,
@@ -16,7 +18,7 @@ func main() {
 	}
 
 	// Create the graph from the file. Exit immediately if there is an error.
-	graph, err := CreateGraphFromFile(os.Args[1])
+	graph, err := digraph.CreateGraphFromFile(os.Args[1])
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v", err)
 		os.Exit(1)
@@ -37,12 +39,5 @@ func main() {
 			break
 		}
 		fmt.Printf("shortest distance from %s to %s: %d\n", inputNode, n.Id, dist)
-	}
-
-	// Check to see whether the graph has a cycle.
-	if graph.HasCycle() {
-		fmt.Println("The graph has a cycle.")
-	} else {
-		fmt.Println("The graph does not have a cycle.")
 	}
 }
