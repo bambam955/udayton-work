@@ -288,6 +288,7 @@ func (g *Graph) DumpGraph() {
 		if len(node.edges) == 0 {
 			continue
 		}
+		// Build a string of all the edges first.
 		var edgesStr string
 		for edge, weight := range node.edges {
 			edgesStr = fmt.Sprintf("%s %s[%d]", edgesStr, edge.Id, weight)
