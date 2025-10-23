@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"sync"
+	"time"
 )
 
 func main() {
@@ -18,4 +20,31 @@ func main() {
 	}
 
 	// Set the table for the philosophers to start dining
+	dinnertime(philoNames)
+}
+
+func dinnertime(names []string) {
+	time.Sleep(1 * time.Second)
+	fmt.Println("Dinner started!")
+
+	table := new(Table)
+
+	for range len(names) {
+		table.Chopsticks = append(table.Chopsticks, new(Chopstick))
+	}
+
+	var wg sync.WaitGroup
+	for i, name := range names {
+		p := new(Philosopher)
+		p.Init(i, name, table, table.Chopsticks[i], table.Chopsticks[(i+1)%len(names)])
+
+		wg.Add(1)
+		go p.Dine(&wg)
+	}
+
+	table.IsSet = true
+	time.Sleep(10 * time.Second)
+	table.IsSet = false
+	wg.Wait()
+	fmt.Println("Dinner is over!")
 }
