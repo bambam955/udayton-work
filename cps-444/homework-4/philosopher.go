@@ -8,33 +8,33 @@ import (
 )
 
 type Philosopher struct {
-	index          int
 	Name           string
-	table          *Table
 	leftChopstick  *Chopstick
 	rightChopstick *Chopstick
 	timesAte       int
 }
 
-func (p *Philosopher) Init(index int, name string, table *Table, left, right *Chopstick) {
-	p.index = index
+func (p *Philosopher) Init(name string, left, right *Chopstick) {
 	p.Name = name
-	p.table = table
 	p.leftChopstick = left
 	p.rightChopstick = right
 }
 
-func (p *Philosopher) Dine(w *sync.WaitGroup) {
+func (p *Philosopher) Dine(stop <-chan struct{}, w *sync.WaitGroup) {
 	defer w.Done()
 
 	p.log("is seated")
 
-	for p.table.IsSet {
-		p.eat()
-		p.think()
+	for {
+		select {
+		case <-stop:
+			p.log(fmt.Sprintf("ate %d times.", p.timesAte))
+			return
+		default:
+			p.eat()
+			p.think()
+		}
 	}
-
-	p.log(fmt.Sprintf("ate %d times.", p.timesAte))
 }
 
 var waiterMutex sync.Mutex

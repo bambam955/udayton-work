@@ -10,16 +10,16 @@ import (
 )
 
 func main() {
+	// Read in the names of the philosophers.
 	scanner := bufio.NewScanner(os.Stdin)
 	var philoNames []string
 	fmt.Println("Enter philosopher names (^D to end): ")
-
 	for scanner.Scan() {
 		text := scanner.Text()
 		philoNames = append(philoNames, strings.TrimSpace(text))
 	}
 
-	// Set the table for the philosophers to start dining
+	// Invite the philosophers to dinner!
 	dinnertime(philoNames)
 }
 
@@ -27,24 +27,23 @@ func dinnertime(names []string) {
 	time.Sleep(1 * time.Second)
 	fmt.Println("Dinner started!")
 
-	table := new(Table)
-
+	var table []*Chopstick
 	for range len(names) {
-		table.Chopsticks = append(table.Chopsticks, new(Chopstick))
+		table = append(table, new(Chopstick))
 	}
-	table.IsSet = true
+
+	kill := make(chan struct{})
 
 	var wg sync.WaitGroup
+	wg.Add(len(names))
 	for i, name := range names {
 		p := new(Philosopher)
-		p.Init(i, name, table, table.Chopsticks[i], table.Chopsticks[(i+1)%len(names)])
-
-		wg.Add(1)
-		go p.Dine(&wg)
+		p.Init(name, table[i], table[(i+1)%len(names)])
+		go p.Dine(kill, &wg)
 	}
 
 	time.Sleep(10 * time.Second)
-	table.IsSet = false
+	close(kill)
 	wg.Wait()
 	fmt.Println("Dinner is over!")
 }
