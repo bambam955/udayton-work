@@ -8,7 +8,7 @@ import (
 )
 
 type Philosopher struct {
-	Name string
+	name string
 	// Tell the philosopher which chopsticks to use.
 	// Left vs right is arbitrary, there just has to be two.
 	leftChopstick  *Chopstick
@@ -19,7 +19,7 @@ type Philosopher struct {
 
 // Who am I?
 func (p *Philosopher) Init(name string, left, right *Chopstick) {
-	p.Name = name
+	p.name = name
 	p.leftChopstick = left
 	p.rightChopstick = right
 }
@@ -89,5 +89,5 @@ var logMutex sync.Mutex
 func (p *Philosopher) log(output string) {
 	logMutex.Lock()
 	defer logMutex.Unlock()
-	fmt.Printf("%-10s %s\n", p.Name, output)
+	fmt.Printf("%-10s %s\n", p.name, output)
 }
