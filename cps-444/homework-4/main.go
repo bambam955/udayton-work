@@ -32,6 +32,7 @@ func dinnertime(names []string) {
 	for range len(names) {
 		table.Chopsticks = append(table.Chopsticks, new(Chopstick))
 	}
+	table.IsSet = true
 
 	var wg sync.WaitGroup
 	for i, name := range names {
@@ -42,7 +43,6 @@ func dinnertime(names []string) {
 		go p.Dine(&wg)
 	}
 
-	table.IsSet = true
 	time.Sleep(10 * time.Second)
 	table.IsSet = false
 	wg.Wait()

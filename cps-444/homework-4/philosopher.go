@@ -27,8 +27,7 @@ func (p *Philosopher) Init(index int, name string, table *Table, left, right *Ch
 func (p *Philosopher) Dine(w *sync.WaitGroup) {
 	defer w.Done()
 
-	for !p.table.IsSet {
-	}
+	p.log("is seated")
 
 	for p.table.IsSet {
 		p.eat()
@@ -41,30 +40,25 @@ func (p *Philosopher) Dine(w *sync.WaitGroup) {
 var waiterMutex sync.Mutex
 
 func (p *Philosopher) eat() {
+	p.log("is hungry")
+
 	waiterMutex.Lock()
-	defer waiterMutex.Unlock()
 
 	p.leftChopstick.PickUp()
-	p.log("acquired left chopstick")
-
-	time.Sleep(time.Duration(rand.Intn(4)+1) * 50 * time.Millisecond)
-
 	p.rightChopstick.PickUp()
-	p.log("acquired right chopstick")
-
 	defer p.leftChopstick.PutDown()
 	defer p.rightChopstick.PutDown()
 
+	waiterMutex.Unlock()
+
 	p.log("started eating")
-	time.Sleep(time.Duration(rand.Intn(4)+1) * 50 * time.Millisecond)
-	p.log("finished eating")
+	time.Sleep(time.Duration(rand.Intn(4)+1) * 100 * time.Millisecond)
 	p.timesAte++
 }
 
 func (p *Philosopher) think() {
 	p.log("is thinking")
-	r := rand.Intn(4)
-	time.Sleep(time.Duration(r+1) * 100 * time.Millisecond)
+	time.Sleep(time.Duration(rand.Intn(4)+1) * 100 * time.Millisecond)
 }
 
 // This mutex allows for serialization of logging from all the philosophers.
