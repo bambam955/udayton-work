@@ -23,17 +23,21 @@ while True:
     if not message:
         cli_sock.close()
         continue
-    # Print the message.
+    # Print the received message.
     print(f"\n{message}")
 
     # Extract the desired filename from the given message.
-    # TODO: make this work with browsers and not just CURL.
     try:
         requested_url = message.split()[1]
     except IndexError:
         cli_sock.close()
         continue
-    parsed_url = urlparse(requested_url)
+    # Handle browser requests where the URL is prefixed with /
+    if requested_url.startswith('/'):
+        url_to_parse = requested_url[1:]
+    else:
+        url_to_parse = requested_url
+    parsed_url = urlparse(url_to_parse)
     raw_filename = (parsed_url.netloc + parsed_url.path)
     print('Requested file:', raw_filename)
     cache_filename = raw_filename.replace("/", "_").replace(":", "_")
@@ -48,10 +52,10 @@ while True:
         cli_sock.sendall(outputdata)
         print('\033[1;32mRead from cache!\033[0m')
     
-    # The file wasn't cached...
+    # The file wasn't cached...we'll need to fetch it from the real server.
     except FileNotFoundError:
         try:
-            # Create a socket on the proxy server for requesting the file from the actual web server.
+            # Create a socket on the proxy server for requesting the file from the real web server.
             req_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
             # Figure out the exact hostname and port number to use.
@@ -88,6 +92,7 @@ while True:
             cache_file.close()
             req_sock_stream.close()
             req_sock.close()
+            print('\033[1;32mRetrieved from web server!\033[0m')
         
         except Exception as e:
             print(f"Illegal request: {e}")
