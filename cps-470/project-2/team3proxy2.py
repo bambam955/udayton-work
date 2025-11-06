@@ -1,6 +1,5 @@
 import socket
 from urllib.parse import urlparse
-import sys
 import argparse
 
 # Define all the arguments.
@@ -32,9 +31,10 @@ while True:
     except IndexError:
         cli_sock.close()
         continue
-    # Handle browser requests where the URL is prefixed with /
+    # Handle browser requests where the URL is prefixed with /.
+    # We need to manually specify the HTTP protocol here.
     if requested_url.startswith('/'):
-        url_to_parse = requested_url[1:]
+        url_to_parse = 'http:/' + requested_url
     else:
         url_to_parse = requested_url
     parsed_url = urlparse(url_to_parse)
@@ -78,17 +78,53 @@ while True:
             req_sock_stream = req_sock.makefile('rwb' , buffering = 0)
             req_sock_stream.write(("GET " + path + " HTTP/1.1\r\nHost: " + hostn + "\r\n\r\n").encode())
             req_sock_stream.flush()
-            
-            # Read data from the request socket until the entire file has been received.
-            # As data is received, write it to both the new cached file and the socket between the proxy and the client.
-            cache_file = open(cache_filename, "wb")
+
+            # Read and parse response headers. These come through first.
+            response_headers = {}
+            status_line = req_sock_stream.readline().decode().strip() # The very first line, before the headers
             while True:
-                data = req_sock_stream.read(1024)
-                if data:
+                line = req_sock_stream.readline().decode().strip()
+                if not line:
+                    break
+                if ': ' in line:
+                    key, value = line.split(': ', 1)
+                    # Save the header key-value pair to the dictionary
+                    response_headers[key.lower()] = value
+
+            # Check the Content-Length header.
+            content_length = int(response_headers.get('content-length', 0))
+            print(f'Content-Length: {content_length}')
+
+            # Send status and headers to client.
+            cli_sock.sendall((status_line + '\r\n').encode())
+            for key, value in response_headers.items():
+                cli_sock.sendall(f'{key}: {value}\r\n'.encode())
+            cli_sock.sendall(b'\r\n')
+
+            # Read and send body based on Content-Length, if available.
+            # Doing this ensures that we read the exact amount of bytes needed, no more, no less,
+            # which prevents the read() call from blocking.
+            # Write everything in the body to the cache file.
+            cache_file = open(cache_filename, "wb")
+            if content_length > 0:
+                bytes_read = 0
+                while bytes_read < content_length:
+                    chunk_size = min(1024, content_length - bytes_read)
+                    data = req_sock_stream.read(chunk_size)
+                    if not data:
+                        break
                     cli_sock.sendall(data)
                     cache_file.write(data)
-                else:
-                    break
+                    bytes_read += len(data)
+            else:
+                # If the Content-Length header wasn't specified then just read until there is no more data.
+                while True:
+                    data = req_sock_stream.read(1024)
+                    if not data:
+                        break
+                    cli_sock.sendall(data)
+                    cache_file.write(data)
+            
             cache_file.close()
             req_sock_stream.close()
             req_sock.close()
