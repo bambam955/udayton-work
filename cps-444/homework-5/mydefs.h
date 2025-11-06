@@ -23,3 +23,4 @@ void printFactors(int a);
 void testBasicMath();
 void testTemps();
 void testPerfects();
+void findPrimes();

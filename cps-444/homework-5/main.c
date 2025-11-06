@@ -28,4 +28,5 @@ int main(void)
     testBasicMath();
     testTemps();
     testPerfects();
+    findPrimes();
 }
