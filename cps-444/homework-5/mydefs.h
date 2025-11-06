@@ -15,7 +15,11 @@ int celsius(int f);
 int fahrenheit(int c);
 // 8. Find the Minimum
 double minThree(double a, double b, double c);
+// 9. Perfect Numbers
+int isPerfect(int a);
+void printFactors(int a);
 
 // Test programs
 void testBasicMath();
 void testTemps();
+void testPerfects();
