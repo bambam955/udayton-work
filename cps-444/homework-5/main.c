@@ -51,10 +51,25 @@ void charSquare(int side, char filler)
 }
 
 // 6. Time in Seconds
-
-// 7. Temperature Conversions
+int timeSeconds(int hours, int mins, int secs)
+{
+    return (hours % 12 * 60 + mins) * 60 + secs;
+}
 
 // 8. Find the Minimum
+double minThree(double a, double b, double c)
+{
+    double res = a;
+    if (res > b)
+    {
+        res = b;
+    }
+    if (res > c)
+    {
+        res = c;
+    }
+    return res;
+}
 
 // 9. Perfect Numbers
 
@@ -63,6 +78,17 @@ void charSquare(int side, char filler)
 // 11. Reversing Digits
 
 // 12. Greatest Common Divisor
+int gcd(int a, int b)
+{
+    int factorOfBoth = 1;
+    int i = 1;
+    while (factorOfBoth && i < a && i < b)
+    {
+        factorOfBoth = (a % i == 0) && (b % i == 0);
+        ++i;
+    }
+    return i;
+}
 
 // 13. Quality Points for Student's Grades
 
@@ -95,4 +121,12 @@ int main(void)
 
     // Square of any character testing
     charSquare(5, '#');
+
+    // Calculate time in seconds between two times.
+    printf("Time difference 1: %d\n", timeSeconds(3, 2, 37) - timeSeconds(1, 32, 37));
+    printf("Time difference 2: %d\n", timeSeconds(3, 2, 37) - timeSeconds(12, 32, 37));
+
+    // Minimum of 3 floating-point nums testing
+    printf("%.1f\n", minThree(3.5, 8.9, 1.1));
+    printf("%.1f\n", minThree(14.5, 90.1, 90.2));
 }
