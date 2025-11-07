@@ -25,8 +25,5 @@ int gcd(int a, int b)
 
 int main(void)
 {
-    testBasicMath();
-    testTemps();
-    testPerfects();
-    findPrimes();
+    testAll();
 }

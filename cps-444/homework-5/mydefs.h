@@ -18,9 +18,12 @@ double minThree(double a, double b, double c);
 // 9. Perfect Numbers
 int isPerfect(int a);
 void printFactors(int a);
+// 10. Prime Numbers
+void findPrimes();
+// 11. Reversing Digits
+int reversedValue(int a);
 
 // Test programs
-void testBasicMath();
+void testAll();
 void testTemps();
 void testPerfects();
-void findPrimes();

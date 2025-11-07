@@ -1,5 +1,7 @@
-#include <stdio.h>
+#include <ctype.h>
 #include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 // 1. Hypotenuse calculations
 double hypotenuse(double a, double b)
@@ -80,4 +82,36 @@ double minThree(double a, double b, double c)
         res = c;
     }
     return res;
+}
+
+// 11. Reversing Digits
+int reversedValue(int a)
+{
+    // First convert the integer to a string.
+    // 20 characters will be plenty for a 32-bit integer.
+    char str[20] = {0};
+    sprintf(str, "%d", a);
+
+    // Figure out how many characters the stringified integer uses.
+    int lastDigitChar = 0;
+    for (int i = 0; i < 20; ++i)
+    {
+        if (!isdigit(str[i]))
+        {
+            lastDigitChar = i - 1;
+            break;
+        }
+    }
+
+    // Add the digit characters one by one to the new string...in reverse.
+    char newStr[20] = {0};
+    for (int i = lastDigitChar; i >= 0; --i)
+    {
+        newStr[lastDigitChar - i] = str[i];
+    }
+
+    // Convert the reversed string to an integer and return the result.
+    char *endPtr;
+    long int num = strtol(newStr, &endPtr, 10);
+    return (int)num;
 }

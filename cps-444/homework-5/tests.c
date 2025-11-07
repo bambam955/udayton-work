@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "mydefs.h"
 
-void testBasicMath()
+void testAll()
 {
     puts("1. HYPOTENUSE TESTING");
     printf("a=3, b=4. Hypotenuse: %.2f\n", hypotenuse(3, 4));
@@ -34,9 +34,21 @@ void testBasicMath()
     printf("Seconds between 1:32:37 and 3:02:37  : %d\n", timeSeconds(3, 2, 37) - timeSeconds(1, 32, 37));
     printf("Seconds between 12:34:17 and 3:09:18 : %d\n", timeSeconds(3, 9, 18) - timeSeconds(12, 34, 17));
 
+    testTemps();
+
     puts("\n8. MIN THREE FLOATS TESTING");
     printf("min(3.5,8.9,1.1)    = %.1f\n", minThree(3.5, 8.9, 1.1));
     printf("min(14.5,90.1,90.2) = %.1f\n", minThree(14.5, 90.1, 90.2));
+
+    testPerfects();
+
+    findPrimes();
+
+    puts("\n11. REVERSING DIGITS TESTING");
+    for (int i = 1234; i < 1000000; i *= 3)
+    {
+        printf("%d reversed is %d\n", i, reversedValue(i));
+    }
 }
 
 void testTemps()
