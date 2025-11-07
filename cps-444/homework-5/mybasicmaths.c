@@ -129,3 +129,17 @@ int gcd(int a, int b)
     }
     return gcd;
 }
+
+// 13. Quality Points for Student's Grades
+int qualityPoints(double grade)
+{
+    if (grade >= 90)
+        return 4;
+    if (grade >= 80)
+        return 3;
+    if (grade >= 70)
+        return 2;
+    if (grade >= 60)
+        return 1;
+    return 0;
+}

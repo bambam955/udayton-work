@@ -24,6 +24,8 @@ void findPrimes();
 int reversedValue(int a);
 // 12. Greatest Common Divisor
 int gcd(int a, int b);
+// 13. Quality Points for Student's Grades
+int qualityPoints(double grade);
 
 // Test programs
 void testAll();

@@ -56,6 +56,13 @@ void testAll()
     {
         printf("GCD of %d and %d is: %d\n", nums[i][0], nums[i][1], gcd(nums[i][0], nums[i][1]));
     }
+
+    puts("\n13. QUALITY POINTS TESTING");
+    double grades[5] = {95, 71.3, 47.0, 80.1, 60.9};
+    for (int i = 0; i < 5; ++i)
+    {
+        printf("Grade %.1f receives %d quality points\n", grades[i], qualityPoints(grades[i]));
+    }
 }
 
 void testTemps()
