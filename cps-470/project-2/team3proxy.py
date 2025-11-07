@@ -132,7 +132,7 @@ while True:
             print('\033[1;32mRetrieved from web server!\033[0m')
         
         except Exception as e:
-            print(f"\033[1;36mIllegal request: {e}\033[0m")
+            print(f"\033[1;31mIllegal request: {e}\033[0m")
             cli_sock.sendall(("HTTP/1.1 404 Not Found\r\n\r\n").encode())  
     
     # For some reason there was an error while reading the cached file or sending it back.
