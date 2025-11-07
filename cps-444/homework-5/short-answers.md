@@ -1,6 +1,8 @@
 # CPS 444, Homework 5
 
-## Question 1: Identify/Correct Errors in Statements
+## General Questions
+
+### Question 1: Identify/Correct Errors in Statements
 
 a. The format string is missing a percent sign. Also, you must pass pointers to variables as the arguments following the format specifier. The correct code is `scanf("%d", &value);`.
 b. The quotation mark precedes the `\n`, which is wrong. The newline character is part of the string. Also, no third argument is given for the third `%d`. The correct code is `printf( "The product of %d and %d is %d\n", x, y, x * y);`.
@@ -108,14 +110,14 @@ for (int x = 100; x <= 150; ++x)
 }
 ```
 
-## Question 2: Write a Single Statement
+### Question 2: Write a Single Statement
 
 a. `puts("Enter two numbers.");`
 b. `a = b * c;`
 c. `// This program performs a sample payroll calculation.`
 d. `scanf("%d %d %d", &a, &b, &c);`
 
-## Question 3: True/False
+### Question 3: True/False
 
 a. False. C operators are evaluated in order of precedence; operators of the same precedence are then evaluated left-to-right.
 b. True
@@ -123,7 +125,7 @@ c. False. That will just print the text `a = 5;`. There is no assignment stateme
 d. False. Operators are still evaluated in order of precedence, and precedence follows PEMDAS.
 e. False. `h22` is a valid variable name.
 
-## Question 4: What Prints?
+### Question 4: What Prints?
 
 a. 2
 b. 4
@@ -135,14 +137,14 @@ g. Nothing
 h. Nothing
 i. blank line
 
-## Question 5: Which Variables' Values are Replaced?
+### Question 5: Which Variables' Values are Replaced?
 
 a. b, c, d, e, f
 b. p
 c. none
 d. none
 
-## Question 6: Valid Math Statements
+### Question 6: Valid Math Statements
 
 a. correct
 b. incorrect
@@ -151,13 +153,13 @@ d. correct
 e. correct
 f. incorrect
 
-## Question 7: Order of Evaluation of Operators
+### Question 7: Order of Evaluation of Operators
 
 a. `*, /, +, -` is the order. `x` will equal `15`.
 b. `%, *, /, +, -` is the order. `x` will equal `3`.
 c. `(), *, /, (), +, *, *` is the order. `x` will equal `324`.
 
-## Question 8: Program Output
+### Question 8: Program Output
 
 It will print:
 
@@ -175,7 +177,7 @@ It will print:
 Total is 385
 ```
 
-## Question 9: Values of Control Variables
+### Question 9: Values of Control Variables
 
 a. `2,4,6,8,10,12`
 b. `5,12,19`
@@ -183,14 +185,14 @@ c. `3,6,9,12,15`
 d. `1`
 e. `12,9,6,3`
 
-## Question 10: Writing `for` Loops
+### Question 10: Writing `for` Loops
 
 a. `for (int i = 1; i <= 7; ++i) printf("%d\n", i);`
 b. `for (int i = 3; i <= 23; i += 5) printf("%d\n", i);`
 c. `for (int i = 20; i >= -10; i -= 6) printf("%d\n", i);`
 d. `for (int i = 19; i <= 51; i += 8) printf("%d\n", i);`
 
-## Question 11: Truth Tables
+### Question 11: Truth Tables
 
 | Condition 1 | Condition 2 | Condition 1 && Condition 2 |
 | ----------- | ----------- | -------------------------- |
@@ -210,3 +212,24 @@ d. `for (int i = 19; i <= 51; i += 8) printf("%d\n", i);`
 | ----------- | ------------ |
 | 0           | 1            |
 | nonzero     | 0            |
+
+## C Arrays
+
+### Question 15: Array Statements
+
+a. `printf("%c", f[6]);`
+b. `scanf("%f", &(f[3]));`
+c. `int g[5] = {8, 8, 8, 8, 8};`
+d. `double total = 0; for (int i = 0; i < 100; ++i) total += prices[i];`
+e. `for (int i = 0; i < 11; ++i) b[i] = a[i];`
+f. Below:
+
+```c
+double smallest = w[0], largest = 0;
+for (int i = 0; i < 99; ++i)
+{
+    smallest = (w[i] < smallest ? w[i] : smallest);
+    largest = (w[i] > largest ? w[i] : largest);
+}
+printf("Smallest: %f, largest: %f", smallest, largest);
+```
