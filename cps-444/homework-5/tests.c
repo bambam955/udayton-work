@@ -49,6 +49,13 @@ void testAll()
     {
         printf("%d reversed is %d\n", i, reversedValue(i));
     }
+
+    puts("\n12. GREATEST COMMON DIVISOR TESTING");
+    int nums[5][2] = {{6, 8}, {8, 9}, {60, 120}, {48, 72}, {678, 24}};
+    for (int i = 0; i < 5; ++i)
+    {
+        printf("GCD of %d and %d is: %d\n", nums[i][0], nums[i][1], gcd(nums[i][0], nums[i][1]));
+    }
 }
 
 void testTemps()

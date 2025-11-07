@@ -22,6 +22,8 @@ void printFactors(int a);
 void findPrimes();
 // 11. Reversing Digits
 int reversedValue(int a);
+// 12. Greatest Common Divisor
+int gcd(int a, int b);
 
 // Test programs
 void testAll();
