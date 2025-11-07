@@ -1,3 +1,4 @@
+#include <limits.h>
 #include <stdio.h>
 #include "mydefs.h"
 
@@ -63,6 +64,24 @@ void testAll()
     {
         printf("Grade %.1f receives %d quality points\n", grades[i], qualityPoints(grades[i]));
     }
+
+    puts("\n14. FIBONACCI TESTING");
+    unsigned int terms[5] = {4, 5, 6, 45, 88};
+    for (int i = 0; i < 5; ++i)
+    {
+        printf("The %dth Fibonacci term is: %ld\n", terms[i], fibonacci(terms[i]));
+    }
+    unsigned long largestFib = 0;
+    unsigned int fibIndex = 0;
+    while (1)
+    {
+        const unsigned long tmp = fibonacci(fibIndex + 1);
+        if (tmp < largestFib)
+            break; // Overflow detected
+        largestFib = tmp;
+        ++fibIndex;
+    }
+    printf("Largest Fibonacci term on this system: fib(%d)=%lu\n", fibIndex, largestFib);
 }
 
 void testTemps()

@@ -143,3 +143,25 @@ int qualityPoints(double grade)
         return 1;
     return 0;
 }
+
+// 14. Fibonacci
+unsigned long fibonacci(unsigned int n)
+{
+    // Early return for starter terms
+    if (n < 2)
+    {
+        return n;
+    }
+
+    unsigned long a = 0, b = 1;
+    for (unsigned int i = 2; i <= n; ++i)
+    {
+        const unsigned long next = a + b;
+        if (next < b)
+            return 0; // Overflow
+        a = b;
+        b = next;
+    }
+
+    return b;
+}

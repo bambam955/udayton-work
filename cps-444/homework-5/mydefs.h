@@ -26,6 +26,8 @@ int reversedValue(int a);
 int gcd(int a, int b);
 // 13. Quality Points for Student's Grades
 int qualityPoints(double grade);
+// 14. Fibonacci
+unsigned long fibonacci(unsigned int n);
 
 // Test programs
 void testAll();
