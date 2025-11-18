@@ -1,14 +1,5 @@
 #include <stdio.h>
-
-void print_arr(const char *label, double arr[], int len)
-{
-    printf("%s: ", label);
-    for (int i = 0; i < len; ++i)
-    {
-        printf("%.1f ", arr[i]);
-    }
-    puts("");
-}
+#include "printers.h"
 
 void copy_arr(double dest[], double src[], int len)
 {
@@ -49,8 +40,8 @@ void question2()
     copy_ptrs(target3, source, source + 5);
 
     // Print results.
-    print_arr("Original", source, 5);
-    print_arr("Target 1", target1, 5);
-    print_arr("Target 2", target2, 5);
-    print_arr("Target 3", target3, 5);
+    print_arr_double("Original", source, 5);
+    print_arr_double("Target 1", target1, 5);
+    print_arr_double("Target 2", target2, 5);
+    print_arr_double("Target 3", target3, 5);
 }
