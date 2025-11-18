@@ -4,4 +4,5 @@
 void main()
 {
     question1();
+    question2();
 }

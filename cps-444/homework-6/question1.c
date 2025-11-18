@@ -1,6 +1,5 @@
 #include <stdio.h>
 
-// Question 1
 void question1()
 {
     int ref[] = {8, 4, 0, 2};
