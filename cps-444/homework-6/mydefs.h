@@ -6,7 +6,7 @@ void question5();
 void question6();
 void question7();
 void question8();
-// void question9();
+void question9();
 // void question10();
 // void question11();
 // void question12();
@@ -34,7 +34,7 @@ QuestionFunc questions[] = {
     question6,
     question7,
     question8,
-    // question9,
+    question9,
     // question10,
     // question11,
     // question12,

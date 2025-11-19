@@ -22,7 +22,7 @@ See you
 e you
 ```
 
-# Question 8
+## Question 8
 
 The program will print:
 
@@ -32,4 +32,12 @@ my
 mmy
 ummy
 Yummy
+```
+
+## Question 9
+
+The program will print:
+
+```
+I read part of it all the way through.
 ```
