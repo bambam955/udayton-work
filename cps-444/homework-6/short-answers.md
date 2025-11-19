@@ -52,3 +52,22 @@ e. In that case the character will be printed _before_ the pointer is decremente
 f. THe first expression ensures the next character to be printed is not `\0`. The second expression compares the memory addresses of `pc` and `str`. If they are equal, then `pc` is back to the beginning of the string again, and we can stop. This works because `0 == false`.
 g. The first `while` condition causes a seg-fault because `*pc` tries to dereference a `NULL` pointer and that is not allowed.
 h. You just have to add the type for `x`...so you get `const char *x = pr("Ho Ho Ho!");`.
+
+## Question 11
+
+The program will print:
+
+```
+How are ya, sweetie? How are ya, sweetie?
+Beat the clock.
+eat the clock.
+Beat the clock. Win a toy.
+Beat
+chat
+hat
+at
+t
+t
+at
+How are ya, sweetie?
+```
