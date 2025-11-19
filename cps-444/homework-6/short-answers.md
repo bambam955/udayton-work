@@ -11,4 +11,13 @@ The program will print:
 2 2
 ```
 
-## Question 2
+## Question 7
+
+The program will print:
+
+```
+See you at the snack bar.
+ee you at the snack bar.
+See you
+e you
+```
