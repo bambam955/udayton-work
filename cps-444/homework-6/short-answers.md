@@ -41,3 +41,14 @@ The program will print:
 ```
 I read part of it all the way through.
 ```
+
+## Question 10
+
+a. `Ho Ho Ho!!oH oH oH`
+b. `const char*`
+c. `Ho Ho Ho!`
+d. The expression `*--pc` means decrement the pointer and then dereference it. In the `pr` function, it gives you the value of the previous character. This is different from `--*pc` because the pointer is dereferenced first and _then_ the value is decremented. The pointer's value will not change, but the result of the expression will be the character one below the actual character. If `*pc` is `b`, then `--*pc` will be `a`.
+e. In that case the character will be printed _before_ the pointer is decremented. This won't matter until the end, when the pointer decrements before printing the last character. The output will be `Ho Ho Ho!!oH oH o`.
+f. THe first expression ensures the next character to be printed is not `\0`. The second expression compares the memory addresses of `pc` and `str`. If they are equal, then `pc` is back to the beginning of the string again, and we can stop. This works because `0 == false`.
+g. The first `while` condition causes a seg-fault because `*pc` tries to dereference a `NULL` pointer and that is not allowed.
+h. You just have to add the type for `x`...so you get `const char *x = pr("Ho Ho Ho!");`.
