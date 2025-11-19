@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include "mydefs.h"
 
+#define NUM_QUESTIONS 5
+
 int main()
 {
     for (int i = 0; i < NUM_QUESTIONS; ++i)

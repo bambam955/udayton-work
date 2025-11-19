@@ -1,10 +1,8 @@
-#define NUM_QUESTIONS 4
-
 void question1();
 void question2();
 void question3();
 void question4();
-// void question5();
+void question5();
 // void question6();
 // void question7();
 // void question8();
@@ -32,7 +30,7 @@ QuestionFunc questions[] = {
     question2,
     question3,
     question4,
-    // question5,
+    question5,
     // question6,
     // question7,
     // question8,
