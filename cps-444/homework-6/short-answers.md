@@ -71,3 +71,12 @@ t
 at
 How are ya, sweetie?
 ```
+
+## Question 12
+
+The program will print:
+
+```
+faavrhee
+*le*on*sm
+```
