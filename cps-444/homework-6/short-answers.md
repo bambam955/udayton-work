@@ -21,3 +21,15 @@ ee you at the snack bar.
 See you
 e you
 ```
+
+# Question 8
+
+The program will print:
+
+```
+y
+my
+mmy
+ummy
+Yummy
+```
