@@ -2,7 +2,7 @@
 
 int contains(const char *str, char c)
 {
-    char *ptr = str;
+    const char *ptr = str;
     while (*ptr != '\0')
     {
         if (*ptr == c)
@@ -17,7 +17,7 @@ void question15()
     const char *searches = "abcdefghijklmnopqrstuvwxyz";
     const char *str = "Philadelphia hippopotamus";
 
-    char *ptr = searches;
+    const char *ptr = searches;
     while (*ptr != '\0')
     {
         int res = contains(str, *ptr);

@@ -1,8 +1,8 @@
 #include <stdio.h>
 
-int index_of(char s1[], char s2[])
+int index_of(const char s1[], const char s2[])
 {
-    char *s1_ptr = s1;
+    const char *s1_ptr = s1;
     while (*s1_ptr)
     {
         int s2_index;

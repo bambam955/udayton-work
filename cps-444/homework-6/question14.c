@@ -1,8 +1,8 @@
 #include <stdio.h>
 
-char *find_char(const char *str, char c)
+const char *find_char(const char *str, char c)
 {
-    char *ptr = str;
+    const char *ptr = str;
     while (*ptr != '\0')
     {
         if (*ptr == c)
@@ -17,7 +17,7 @@ void question14()
     const char *searches = "abcdefghijklmnopqrstuvwxyz";
     const char *str = "Philadelphia hippopotamus";
 
-    char *ptr = searches;
+    const char *ptr = searches;
     while (*ptr != '\0')
     {
         const char *res = find_char(str, *ptr);
