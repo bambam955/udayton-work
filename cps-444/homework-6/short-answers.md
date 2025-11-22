@@ -80,3 +80,7 @@ The program will print:
 faavrhee
 *le*on*sm
 ```
+
+## Question 19
+
+The `structure` keyword does not exist in C. Use the `struct` keyword instead.
