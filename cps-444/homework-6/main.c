@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "mydefs.h"
 
-#define NUM_QUESTIONS 17
+#define NUM_QUESTIONS 18
 
 int main()
 {
