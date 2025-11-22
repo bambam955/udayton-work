@@ -22,7 +22,7 @@ void question21();
 void question22();
 void question23();
 void question24();
-// void question25();
+void question25();
 
 typedef void (*QuestionFunc)();
 QuestionFunc questions[] = {
@@ -50,5 +50,5 @@ QuestionFunc questions[] = {
     question22,
     question23,
     question24,
-    // question25,
+    question25,
 };
