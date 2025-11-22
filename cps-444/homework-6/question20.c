@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "question20.h"
 
-static struct month months[12] = {
+struct month months[12] = {
     {"January", "Jan", 31, 1},
     {"February", "Feb", 28, 2},
     {"March", "Mar", 31, 3},

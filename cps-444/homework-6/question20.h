@@ -6,6 +6,6 @@ struct month
     int index;
 };
 
-static struct month months[12];
+extern struct month months[12];
 
 void question20();
