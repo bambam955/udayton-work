@@ -24,7 +24,8 @@ SRCS = main.c \
 	   question19.c \
 	   question20.c \
 	   question21.c \
-	   question22.c
+	   question22.c \
+	   question23.c
 HEADERS = mydefs.h printers.h question20.h
 OBJS = $(addprefix $(BUILD_DIR)/, $(SRCS:.c=.o))
 GCHS = $(addprefix $(BUILD_DIR)/, $(HEADERS:.h=.h.gch))

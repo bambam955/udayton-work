@@ -84,3 +84,16 @@ faavrhee
 ## Question 19
 
 The `structure` keyword does not exist in C. Use the `struct` keyword instead.
+
+## Question 23
+
+a. Combined, the 3 statements will print:
+
+```
+6
+Arcturan
+cturan
+```
+
+b. You could do `deb.title.first` or `pb->title.first`.
+c.
