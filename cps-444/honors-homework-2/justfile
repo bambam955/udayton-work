@@ -1,0 +1,3 @@
+wc *args: 
+    @make --quiet
+    @-./build/wc {{args}}
