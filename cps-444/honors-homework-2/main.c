@@ -6,8 +6,7 @@ int main(int argc, char *argv[])
 {
     struct wc_stat_flags stat_flags;
     int first_pos_arg = 0;
-    const int res = parse_cmd(argc, argv, &stat_flags, &first_pos_arg);
-    if (res != 0)
+    if (parse_cmd(argc, argv, &stat_flags, &first_pos_arg) != 0)
         exit(EXIT_FAILURE);
 
     if (first_pos_arg > 0)
@@ -19,7 +18,16 @@ int main(int argc, char *argv[])
             filenames[i - first_pos_arg] = argv[i];
         }
 
-        check_valid_files(filenames, num_files);
+        if (check_valid_files(filenames, num_files) != 0)
+            exit(EXIT_FAILURE);
+
+        if (output_file_stats(filenames, num_files, &stat_flags) != 0)
+            exit(EXIT_FAILURE);
+    }
+    else
+    {
+        if (output_file_stats(NULL, 0, &stat_flags) != 0)
+            exit(EXIT_FAILURE);
     }
 
     exit(EXIT_SUCCESS);

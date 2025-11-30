@@ -2,7 +2,7 @@ BUILD_DIR = build
 CC = gcc
 CFLAGS = -I $(BUILD_DIR)
 # LDFLAGS = -lm
-SRCS = main.c cmd.c check_files.c
+SRCS = main.c cmd.c check_files.c wcstats.c
 HEADERS = mydefs.h
 OBJS = $(addprefix $(BUILD_DIR)/, $(SRCS:.c=.o))
 GCHS = $(addprefix $(BUILD_DIR)/, $(HEADERS:.h=.h.gch))

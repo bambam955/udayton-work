@@ -38,6 +38,7 @@ int parse_cmd(int argc, char *argv[], struct wc_stat_flags *wc_flags, int *first
     // Loop through all the options and parse them one by one.
     // Setting opterr=0 allows for full control of error messages for invalid options.
     opterr = 0;
+    bool was_stat_option_given = false;
     while (1)
     {
         // Store the index of the long option that was just found.
@@ -55,18 +56,21 @@ int parse_cmd(int argc, char *argv[], struct wc_stat_flags *wc_flags, int *first
         // Parse out the different stat flags.
         case 'l':
             wc_flags->newlines = true;
+            was_stat_option_given = true;
             break;
         case 'w':
             wc_flags->words = true;
+            was_stat_option_given = true;
             break;
         case 'm':
             wc_flags->bytes = true;
+            was_stat_option_given = true;
             break;
 
         // Print help message.
         case 'h':
             puts(help_msg);
-            return EXIT_SUCCESS;
+            exit(EXIT_SUCCESS);
 
         // Handle unknown options.
         case '?':
@@ -94,6 +98,14 @@ int parse_cmd(int argc, char *argv[], struct wc_stat_flags *wc_flags, int *first
             // We should NEVER get here.
             abort();
         }
+    }
+
+    // If no stat options were given then the default is to show everything.
+    if (!was_stat_option_given)
+    {
+        wc_flags->newlines = true;
+        wc_flags->words = true;
+        wc_flags->bytes = true;
     }
 
     // This variable will hold the starting index of the positional arguments
