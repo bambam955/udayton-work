@@ -108,7 +108,7 @@ def main():
         os.close(fd)
     client_socket.close()
 
-def get_file_block_count(filename) -> int:
+def get_file_block_count(filename: str) -> int:
     """
     Determines the number of TFTP blocks for the given file
     :param filename: The name of the file
@@ -121,7 +121,7 @@ def get_file_block_count(filename) -> int:
     except:
         return -1
 
-def get_file_block(fd, block_number):
+def get_file_block(fd: int, block_number: int) -> bytes:
     """
     Get the file block data for the given file and block number
     :param fd: The file descriptor of the file to read
@@ -133,7 +133,7 @@ def get_file_block(fd, block_number):
     block_data = os.read(fd, TFTP_BLOCK_SIZE)
     return block_data
 
-def socket_setup():
+def socket_setup() -> socket.socket:
     """
     Sets up a UDP socket to listen on the TFTP port
     :return: The created socket
@@ -144,7 +144,7 @@ def socket_setup():
     s.settimeout(5 * 60)
     return s
 
-def parse_conn_msg(packet: bytes):
+def parse_conn_msg(packet: bytes) -> tuple[str, str]:
     """
     Parse the initial TFTP request message from client
     """
@@ -167,7 +167,7 @@ def parse_conn_msg(packet: bytes):
 
     return (filename, mode)
 
-def parse_ack_msg(packet: bytes):
+def parse_ack_msg(packet: bytes) -> int:
     """
     Parse acknowledgement message from client (op-code 4)
     """
@@ -177,7 +177,7 @@ def parse_ack_msg(packet: bytes):
     
     return block_num
 
-def parse_err_msg(packet: bytes):
+def parse_err_msg(packet: bytes) -> tuple[int, str]:
     """
     Parse error message from client (op-code 5)
     """
@@ -188,7 +188,7 @@ def parse_err_msg(packet: bytes):
     err_msg = packet[4:].decode('ascii')
     return (err_code, err_msg)
 
-def create_data_msg(block_num: int, data: bytes):
+def create_data_msg(block_num: int, data: bytes) -> bytes:
     """
     Create a TFTP data message (op-code 3) containing a file block
     """
@@ -196,7 +196,7 @@ def create_data_msg(block_num: int, data: bytes):
     msg = struct.pack('!HH', op_code, block_num) + data
     return msg
 
-def create_error_msg(error_code):
+def create_error_msg(error_code: int) -> bytes:
     """
     Create a TFTP error message (op-code 5) with standard TFTP error codes
     """
