@@ -1,8 +1,8 @@
 # udayton-class-projects
 
-Here is where I am storing all of my school projects, large and small, so that I have easy access to them from anywhere.
+This repository contains all of the code that I wrote during my time spent at the University of Dayton obtaining a Bachelor's of Science in Computer Science degree.
 
-I also want to have the ability to version control larger projects.
+There are a variety of projects, ranging from small one-file programs to larger applications, written many different programming languages and designed for many different purposes.
 
 ## CPS 250
 
@@ -32,4 +32,9 @@ I also want to have the ability to version control larger projects.
 ## CPS 470
 
 - **Professor:** Tianming Zhao
+- **When taken:** fall 2025
+
+## CPS 490
+
+- **Professor:** Lacie Stiffler
 - **When taken:** fall 2025

@@ -1,0 +1,13 @@
+{
+  "name": "chat-app",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "start": "node backend/src/index.js",
+    "build": "npm run build -w frontend",
+    "heroku-postbuild": "npm run build -w frontend"
+  }
+}
