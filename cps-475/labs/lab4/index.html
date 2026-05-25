@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="/favicon.ico" rel="icon" type="image/x-icon">
+  <link href="/favicon.svg" rel="icon" type="image/svg+xml">
+  <link href="/src/styles.css" rel="stylesheet">
+  <title>Bennett Moore - Professional Profile</title>
+  <script>
+    if (localStorage.getItem('color-theme') === 'light' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: light)').matches)) {
+      document.documentElement.classList.remove('dark');
+    } else {
+      document.documentElement.classList.add('dark');
+    }
+  </script>
+</head>
+<body class="bg-gray-100 text-gray-800 leading-relaxed dark:bg-gray-900 dark:text-gray-300">
+  <script>
+    document.write('Content generated from document.write');
+    document.write("<script>alert('script code is generated within script code');</" + "script>");
+
+    if (document.cookie.indexOf('username') < 0) {
+      alert('no username in cookie, set a new one');
+      document.cookie = 'username=bennettmooreudayton';
+    } else {
+      alert('my cookie: ' + document.cookie);
+    }
+  </script>
+
+  <div class="mx-auto my-8 max-w-5xl rounded-lg bg-white p-6 shadow-lg dark:bg-gray-800 sm:p-8 relative">
+    <button id="theme-toggle" type="button" class="absolute right-4 top-4 rounded-lg p-2.5 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-700" aria-label="Toggle theme">
+      <svg id="theme-toggle-dark-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+      <svg id="theme-toggle-light-icon" class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm-.707 10.607a1 1 0 010-1.414l.707-.707a1 1 0 111.414 1.414l-.707.707a1 1 0 01-1.414 0zM1 11a1 1 0 100-2H0a1 1 0 100 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+    </button>
+
+    <header class="mb-8 border-b border-gray-200 pb-6 text-center dark:border-gray-700">
+      <img src="/assets/profile.jpg" alt="Portrait of Bennett Moore" class="mx-auto mb-6 h-36 w-36 rounded-full border-4 border-gray-200 object-cover dark:border-gray-700">
+      <h1 class="text-4xl font-bold text-gray-800 dark:text-white">Bennett Moore</h1>
+      <p class="mt-1 text-lg text-gray-500 dark:text-gray-400">Software Developer</p>
+      <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Senior Computer Science major at University of Dayton with nearly 3 years of professional software development experience.</p>
+      <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">NOTE: this webpage is being developed as part of Lab 4 for CPS 475, taught by Prof. Phu Phung.</p>
+    </header>
+
+    <main class="grid gap-8 lg:grid-cols-3">
+      <section class="space-y-8 lg:col-span-2">
+        <section id="about">
+          <h2 class="mb-4 border-b-2 border-primary-500 pb-2 text-2xl font-semibold text-primary-500 dark:border-primary-400 dark:text-primary-400">Summary</h2>
+          <p class="text-gray-700 dark:text-gray-300">
+            Senior computer science major at the University of Dayton (GPA 3.88, Honors) with almost 3 years of
+            professional software development experience at MRS Electronics, Inc. Experienced in leading embedded and
+            mobile applications from design through deployment, with expertise in Qt/QML, Flutter/Dart, C/C++, MQTT,
+            and CAN bus.
+          </p>
+        </section>
+
+        <section id="experience">
+          <h2 class="mb-4 border-b-2 border-primary-500 pb-2 text-2xl font-semibold text-primary-500 dark:border-primary-400 dark:text-primary-400">Experience</h2>
+          <article class="rounded-lg border border-gray-200 p-4 dark:border-gray-700">
+            <h3 class="text-xl font-semibold text-gray-800 dark:text-white">Software Developer, MRS Electronics Inc. (Dayton, OH)</h3>
+            <p class="mb-4 text-sm text-gray-500 dark:text-gray-400">January 2023 - Present</p>
+            <ul class="list-disc space-y-2 pl-5">
+              <li>Spearheaded an embedded telematics and pump control app deployed to 125+ manure pumps used by 100+ operators, including 3 major and 20+ minor releases.</li>
+              <li>Overhauled 75%+ of the codebase (Qt C++/QML, MQTT, CAN), resolved race-condition root causes, and added Buildroot + Yocto cross-compilation support.</li>
+              <li>Served as key developer for a Bluetooth grain cart system with PlatformIO/C++ scoreboard and Flutter/Dart app, now deployed on 50+ grain carts.</li>
+              <li>Built internal Qt libraries (module flashing + MQTT/API wrappers), reducing boilerplate by ~80% and improving development speed across projects.</li>
+              <li>Designed GitLab CI/CD systems and improved project documentation standards, FAQ coverage, and release tracking.</li>
+            </ul>
+          </article>
+        </section>
+
+        <section id="education">
+          <h2 class="mb-4 border-b-2 border-primary-500 pb-2 text-2xl font-semibold text-primary-500 dark:border-primary-400 dark:text-primary-400">Education</h2>
+          <article class="rounded-lg border border-gray-200 p-4 dark:border-gray-700">
+            <h3 class="text-xl font-semibold text-gray-800 dark:text-white">University of Dayton, Dayton, OH</h3>
+            <p class="text-sm text-gray-500 dark:text-gray-400">B.S. in Computer Science</p>
+            <p class="mb-4 text-sm text-gray-500 dark:text-gray-400">August 2023 - May 2026</p>
+            <ul class="list-disc space-y-2 pl-5">
+              <li>GPA: 3.88/4.0, Dean's List, graduating with Honors</li>
+              <li>Coursework: Computer Architecture, Operating Systems, Algorithms, Programming Languages, Discrete Structures, Calculus I-III</li>
+              <li>Scholarships: UD Trustees' Merit, Choose Ohio First, National Merit</li>
+            </ul>
+          </article>
+        </section>
+
+        <section id="contact">
+          <h2 class="mb-4 border-b-2 border-primary-500 pb-2 text-2xl font-semibold text-primary-500 dark:border-primary-400 dark:text-primary-400">Contact</h2>
+          <ul class="list-none space-y-2 p-0">
+            <li>
+              <strong class="font-semibold">Email:</strong>
+              <button id="email-toggle" class="ml-2 rounded bg-primary-500 px-3 py-1 text-xs text-white hover:bg-primary-600">Show Email</button>
+              <a id="email-link" href="mailto:hi@bemoore.life" class="ml-2 hidden text-primary-500 hover:underline dark:text-primary-400">hi@bemoore.life</a>
+            </li>
+            <li><strong class="font-semibold">LinkedIn:</strong> <a href="https://www.linkedin.com/in/bennett-a-moore" target="_blank" rel="noreferrer" class="text-primary-500 hover:underline dark:text-primary-400">linkedin.com/in/bennett-a-moore</a></li>
+            <li><strong class="font-semibold">GitHub:</strong> <a href="https://github.com/bambam955" target="_blank" rel="noreferrer" class="text-primary-500 hover:underline dark:text-primary-400">github.com/bambam955</a></li>
+          </ul>
+        </section>
+      </section>
+
+      <aside class="space-y-6">
+        <section class="rounded-lg border border-gray-200 p-4 dark:border-gray-700">
+          <h3 class="mb-3 border-b border-primary-500 pb-2 text-lg font-semibold text-primary-500 dark:text-primary-400">Digital Clock</h3>
+          <p id="digital-clock" class="text-2xl font-mono text-gray-800 dark:text-white">--:--:--</p>
+        </section>
+
+        <section class="rounded-lg border border-gray-200 p-4 dark:border-gray-700">
+          <h3 class="mb-3 border-b border-primary-500 pb-2 text-lg font-semibold text-primary-500 dark:text-primary-400">Analog Clock</h3>
+          <div id="analog-clock" class="analog-clock mx-auto">
+            <div class="clock-hand hour-hand" id="hour-hand"></div>
+            <div class="clock-hand minute-hand" id="minute-hand"></div>
+            <div class="clock-hand second-hand" id="second-hand"></div>
+            <div class="clock-center"></div>
+          </div>
+        </section>
+
+      </aside>
+    </main>
+
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

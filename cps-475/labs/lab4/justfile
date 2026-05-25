@@ -1,0 +1,15 @@
+# List available recipes
+default:
+    @just --list --unsorted
+
+# Run dev server with Vite
+dev:
+    npm run dev
+
+# Build the site
+build: deps
+    npm run build
+
+# Install dependencies
+deps:
+    npm install --no-fund

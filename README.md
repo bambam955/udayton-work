@@ -34,6 +34,11 @@ There are a variety of projects, ranging from small one-file programs to larger 
 - **Professor:** Tianming Zhao
 - **When taken:** fall 2025
 
+## CPS 475
+
+- **Professor:** Phu Phung
+- **When taken:** spring 2026
+
 ## CPS 490
 
 - **Professor:** Lacie Stiffler
