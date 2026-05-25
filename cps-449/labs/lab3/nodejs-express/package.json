@@ -1,0 +1,28 @@
+{
+  "name": "nodejs-express",
+  "version": "1.0.0",
+  "description": "First Express.js App",
+  "keywords": [
+    "Express",
+    "Node.js"
+  ],
+  "homepage": "https://bitbucket.org/bambam955/cps449-mooreb26#readme",
+  "bugs": {
+    "url": "https://bitbucket.org/bambam955/cps449-mooreb26/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://bambam955-admin@bitbucket.org/bambam955/cps449-mooreb26.git"
+  },
+  "license": "ISC",
+  "author": "Bennett Moore",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js",
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}

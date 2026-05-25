@@ -1,0 +1,22 @@
+docker_repo := "bambam955/cps449"
+docker_tag := "ms-uscities"
+
+# List available recipes
+default:
+    @just --list --unsorted
+
+# Run dev servern
+dev:
+    npm start
+
+# Build the containerized app
+build:
+    docker build -t {{docker_repo}}:{{docker_tag}} -f Dockerfile .
+
+# Push the container to Docker Hub
+push: build
+    docker push {{docker_repo}}:{{docker_tag}}
+
+# Test-run the app in Docker
+run: build
+    docker run --rm -it -p 8080:8080 {{docker_repo}}:{{docker_tag}}

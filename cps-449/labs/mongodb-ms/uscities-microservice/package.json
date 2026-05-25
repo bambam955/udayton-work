@@ -1,0 +1,31 @@
+{
+  "name": "microservice1",
+  "version": "0.1.0",
+  "description": "First Express.js microservice",
+  "keywords": [
+    "Express",
+    "Node.js",
+    "microservice"
+  ],
+  "homepage": "https://bitbucket.org/bambam955/cps449-microservice1#readme",
+  "bugs": {
+    "url": "https://bitbucket.org/bambam955/cps449-microservice1/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://bambam955-admin@bitbucket.org/bambam955/cps449-microservice1.git"
+  },
+  "license": "ISC",
+  "author": "Bennett Moore",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js",
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^4.22.1",
+    "mongodb": "^7.1.0"
+  }
+}

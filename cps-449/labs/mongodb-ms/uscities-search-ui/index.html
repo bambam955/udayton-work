@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="https://udayton-cloud.bitbucket.io/clock.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+<head>
+    <meta charset="UTF-8">
+    <title>CPS449 - US Cities Search Service</title>
+    <link rel="stylesheet" href="https://udayton-cloud.bitbucket.io/style1.css" />
+    <style>
+        .button {
+            background-color: #4CAF50;
+            /* Green */
+            border: none;
+            color: white;
+            padding: 5px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 12px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+
+        .round {
+            border-radius: 8px;
+        }
+
+        #response {
+            background-color: #ff9800;
+            width: 90%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container wrapper">
+        <div id="top">
+            <h1>CPS 449 - Cloud-based Intelligent Application Development<br/>US Cities Search Service</h1>
+            <h2>By Bennett Moore</h2>
+            <div id="email" onclick="showHideEmail()">Show my email</div>
+            <script src="email.js"></script>
+        </div>
+        <div class="wrapper">
+            <div id="menubar">
+                <p>Just a demo HTML page.</p>
+                <canvas id="analog-clock" width="150" height="150" style="background-color:#999"></canvas>
+                <script>
+                    var canvas = document.getElementById('analog-clock');
+                    var ctx = canvas.getContext('2d');
+                    var radius = canvas.height / 2;
+                    ctx.translate(radius, radius);
+                    radius = radius * 0.90;
+                    setInterval(drawClock, 1000);
+
+                    function drawClock() {
+                        drawFace(ctx, radius);
+                        drawNumbers(ctx, radius);
+                        drawTime(ctx, radius);
+                    }
+                </script>
+            </div>
+            <div id="main">
+                <div id="mydiv" onclick="document.getElementById('mydiv').innerHTML = 'Clicked time: ' + Date()">
+                    Click here for current time
+                </div>
+                <div id="digit-clock"></div>
+                <script>
+                    function displayTime() {
+                        document.getElementById('digit-clock').innerHTML = "Current time: " + new Date()
+                    }
+                    setInterval(displayTime, 500);
+                </script>
+                <h2>City Search</h2>
+                <form>
+                    ZIPs or City: <input name="data" onkeyup="instantsearch(event)" id="data" />
+                    <input class="button round" type="button" value="Search" onclick="jQueryAjax()" />
+                </form>
+                <div id="response"></div>
+                <script>
+                    function jQueryAjax() {
+                        var input = $('#data').val();
+                        if (input.length == 0) return;
+                        searchCities(input);
+                        $('#data').val('');
+                    }
+                    function instantsearch(event) {
+                        var input = $("#data").val();
+                        if (input.length == 0) {
+                            $("#response").hide();
+                            return;
+                        }
+                        searchCities(input);
+                        if(event.keyCode == 13) 
+                            $("#data").val("");
+                    }
+                    function searchCities(input) {
+                        $.get('https://cps449-mooreb26-uscities.azurewebsites.net/uscities-search/' + input,
+                            function(result) {
+                                if (result) {
+                                    $("#response").show();
+                                    $("#response").html(json2htmltable(result));
+                                } 
+                            }
+                        )
+                    }
+                    function json2htmltable (jsondata) {
+                        if (jsondata.length ==0) return "No results";
+                        var htmltable ="<table><tr>" +
+                            "<th>City</th>" +
+                            "<th>State</th>" +
+                            "<th>Zips</th></tr>";
+                        for (var i = 0; i < jsondata.length; i++) {
+                            htmltable += "<tr>" +
+                                "<td>" + jsondata[i].city + "</td>" +
+                                "<td>" + jsondata[i].state_name + "</td>" +
+                                "<td>" + jsondata[i].zips + "</td></tr>";
+                        }
+                        return htmltable + "</table>";
+                    }
+                </script>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
