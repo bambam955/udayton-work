@@ -1,0 +1,16 @@
+# List available recipes
+default:
+	@just --list --unsorted
+
+# Deploy site to Apache server
+deploy:
+	./scripts/deploy.sh
+
+# Install packages and init DB
+setup-all: setup init-db
+
+setup:
+	./scripts/setup.sh
+
+init-db:
+	./db/init.sh
