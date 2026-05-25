@@ -48,3 +48,8 @@ There are a variety of projects, ranging from small one-file programs to larger 
 
 - **Professor:** Lacie Stiffler
 - **When taken:** fall 2025
+
+## CPS 491
+
+- **Professor:** Nicholas Stiffler
+- **When taken:** spring 2026
