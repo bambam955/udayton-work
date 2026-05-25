@@ -1,0 +1,29 @@
+{
+  "name": "@udayton-coil-team2/backend",
+  "version": "0.2.1",
+  "keywords": [
+    "Express",
+    "Node.js",
+    "microservice"
+  ],
+  "homepage": "https://github.com/UD-CPS449-COILPROJECT/COIL",
+  "bugs": {
+    "url": "https://github.com/UD-CPS449-COILPROJECT/COIL/issues"
+  },
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "coverage": "NODE_OPTIONS=--experimental-vm-modules jest --coverage",
+    "coverage:report": "NODE_OPTIONS=--experimental-vm-modules jest --coverage --ci --json --testLocationInResults --outputFile=report.json",
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "ajv": "^8.18.0",
+    "cors": "^2.8.6",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "jest": "^30.3.0"
+  }
+}

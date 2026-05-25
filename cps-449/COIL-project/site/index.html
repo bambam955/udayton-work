@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Fraud Detection System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&family=Space+Grotesk:wght@500;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body>
+  <header class="top-nav">
+    <a href="./index.html" class="nav-link">Home</a>
+
+    <div class="nav-actions">
+      <a href="https://github.com/UD-CPS449-COILPROJECT" target="_blank" class="nav-button">GitHub</a>
+      <a href="https://coil-team2-sp26-frontend-g5ana9fufsbjh4fa.canadacentral-01.azurewebsites.net/" target="_blank"
+        class="nav-button">Demo</a>
+    </div>
+  </header>
+
+  <main class="page-shell">
+    <section class="hero">
+      <h1>Project Overview</h1>
+      <p>
+        Our team is building an AI-powered fraud detection system for banking transactions. The platform analyzes
+        transaction behavior in real time to flag suspicious activity, reduce false positives, and help banks respond
+        faster to potential fraud cases.
+      </p>
+      <p>
+        This project is being developed by students at the University of Dayton, in collaboration with university
+        students from Vietnam, with a focus on practical deployment,
+        scalable cloud architecture, and explainable model outputs so analysts can trust and validate each prediction.
+      </p>
+      <a class="primary-cta" href="https://coil-team2-sp26-frontend-g5ana9fufsbjh4fa.canadacentral-01.azurewebsites.net/" target="_blank">Open Fraud Check MicroService</a>
+    </section>
+
+    <section class="demo-grid">
+      <article class="demo-card">
+        <h2>System Demo</h2>
+        <div class="video-placeholder" role="img" aria-label="System demo preview">
+          <span>Video Preview</span>
+        </div>
+      </article>
+      <article class="demo-card">
+        <h2>API Demo</h2>
+        <div class="video-placeholder" role="img" aria-label="API demo preview">
+          <span>Video Preview</span>
+        </div>
+      </article>
+    </section>
+
+    <section class="team-grid">
+      <article class="profile-card">
+        <img src="assets/profiles/Bennett.jpg" alt="Bennett Moore profile photo" />
+        <h3>Bennett Moore</h3>
+        <p>Project Lead</p>
+      </article>
+      <article class="profile-card">
+        <img src="assets/profiles/Alex.png" alt="Alex Testa profile photo" />
+        <h3>Alex Testa</h3>
+        <p>Developer</p>
+      </article>
+      <article class="profile-card">
+        <img src="assets/profiles/Tidiane.jpg" alt="Tidiane Dia profile photo" />
+        <h3>Tidiane Dia</h3>
+        <p>Designer</p>
+      </article>
+      <article class="profile-card">
+        <img src="assets/profiles/Paige.jpg" alt="Paige Myers profile photo" />
+        <h3>Paige Myers</h3>
+        <p>Developer/Designer</p>
+      </article>
+      <article class="profile-card">
+        <img src="assets/profiles/Dhruv.jpg" alt="Dhruv Patel profile photo" />
+        <h3>Dhruv Patel</h3>
+        <p>QA Engineer</p>
+      </article>
+      <article class="profile-card">
+        <img src="assets/profiles/Huy Ngo.png" alt="Huy Ngo profile photo" />
+        <h3>Huy Ngo</h3>
+        <p>Partner Developer</p>
+      </article>
+      <article class="profile-card">
+        <img src="assets/profiles/Loi Quang.png" alt="Loi Quang profile photo" />
+        <h3>Loi Quang</h3>
+        <p>Partner Developer</p>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    // Keep anchor placeholders that point to "#" from jumping to the top with smooth scrolling.
+    document.querySelectorAll('a[href="#"]').forEach((link) => {
+      link.addEventListener('click', (event) => {
+        event.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+  </script>
+</body>
+
+</html>
