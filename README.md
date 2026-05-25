@@ -29,6 +29,11 @@ There are a variety of projects, ranging from small one-file programs to larger 
 - **Professor:** Norman Bashias
 - **When taken:** fall 2025
 
+## CPS 449
+
+- **Professor:** Phu Phung
+- **When taken:** spring 2026
+
 ## CPS 470
 
 - **Professor:** Tianming Zhao
