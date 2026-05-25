@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <title>CPS449 - Test page of Bennett Moore</title>
+    <link rel="stylesheet" href="https://udayton-cloud.bitbucket.io/style1.css" />
+    <script src="https://udayton-cloud.bitbucket.io/clock.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cps449-mooreb26-webchat.azurewebsites.net/socket.io/socket.io.js"></script>
+    <script>
+        var socketio = io.connect('wss://cps449-mooreb26-webchat.azurewebsites.net');
+        socketio.on('online', (data) => {
+            $("#online").html(data+"<br>");
+        });
+        socketio.on("message",(data) => {
+            $("#response").append(data + "<br>");
+        });
+        socketio.on("typing",(data) => {
+            $("#typing").html(data+"<br>");
+            setTimeout(() => {
+                $("#typing").html("<br>");
+            }, 500);
+        });
+        function send(){
+            var input = $("#data").val();
+            if (input.length == 0) return;
+            socketio.emit("message",input);
+            $("#data").val("");
+        }
+    </script>
+    <style>
+        .button {
+            background-color: #4CAF50;
+            /* Green */
+            border: none;
+            color: white;
+            padding: 5px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 12px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+
+        .round {
+            border-radius: 8px;
+        }
+
+        #response {
+            background-color: #ff9800;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container wrapper">
+        <div id="top">
+            <h1>A test webpage for CPS449 - Cloud-based Intelligent Application Development</h1>
+            <h2>By Bennett Moore</h2>
+            <div id="email">Show my email</div>
+            <script type="module" src="./email.js"></script>
+        </div>
+        <div class="wrapper">
+            <div id="menubar">
+                <p>Just a demo HTML page.</p>
+                <canvas id="analog-clock" width="150" height="150" style="background-color:#999"></canvas>
+                <script>
+                    var canvas = document.getElementById('analog-clock');
+                    var ctx = canvas.getContext('2d');
+                    var radius = canvas.height / 2;
+                    ctx.translate(radius, radius);
+                    radius = radius * 0.90;
+                    setInterval(drawClock, 1000);
+
+                    function drawClock() {
+                        drawFace(ctx, radius);
+                        drawNumbers(ctx, radius);
+                        drawTime(ctx, radius);
+                    }
+                </script>
+            </div>
+            <div id="main">
+                <div id="mydiv" onclick="document.getElementById('mydiv').innerHTML = 'Clicked time: ' + Date()">
+                    Click here for current time
+                </div>
+                <div id="digit-clock"></div>
+                <script>
+                    function displayTime() {
+                        document.getElementById('digit-clock').innerHTML = "Current time: " + new Date()
+                    }
+                    setInterval(displayTime, 500);
+                </script>
+                 
+                Chat message: <input name="data" id="data" onkeyup="socketio.emit('typing')" />
+                <input class="button round" type="button" value="Send" onclick="send()" />
+                <div id="typing"></div>
+                <div id="online"></div>
+                <div id="response"></div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

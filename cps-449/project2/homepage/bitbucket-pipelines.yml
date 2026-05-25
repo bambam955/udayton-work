@@ -1,0 +1,24 @@
+image: node:20
+
+pipelines:
+  branches:
+    source:
+      - step:
+          name: Build and publish to main
+          caches:
+            - node
+          script:
+            - npm ci
+            - npm run build
+            - mkdir -p /tmp/site
+            - cp -R dist/. /tmp/site/
+            - git config user.name "bitbucket-pipelines"
+            - git config user.email "pipelines@bitbucket.org"
+            - git remote set-url origin "https://x-token-auth:${BB_REPO_WRITE_TOKEN}@bitbucket.org/${BITBUCKET_REPO_FULL_NAME}.git"
+            - git fetch origin main || true
+            - if git rev-parse --verify origin/main >/dev/null 2>&1; then git checkout -B main origin/main; else git checkout --orphan main; fi
+            - find . -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} +
+            - cp -R /tmp/site/. .
+            - git add -A
+            - git commit -m "Deploy ${BITBUCKET_COMMIT}" || echo "No changes"
+            - git push --force origin main
